@@ -25,11 +25,13 @@ void StaffPresenter::init()
 	int imageWidth = image.width();
 	int imageHeight = image.height();
 
-	qreal desiredSize = 100.0;
-	qreal scaleFactor =  desiredSize / static_cast<qreal>(imageWidth);
+	qreal desiredHeight = 200.0;
+	qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
 	QPixmap pixmap = QPixmap::fromImage(image);
 	QGraphicsPixmapItem* pixmapItem = mGraphicsScene->addPixmap( pixmap );
 	pixmapItem->setScale( scaleFactor );
+
+	pixmapItem->setPos( 0, (-desiredHeight/2) + verticalSpacing * 3 );
 }
 
 void StaffPresenter::update()

@@ -1,5 +1,6 @@
 #pragma once
 
+// Vs music sheet
 class Staff
 {
 public:
