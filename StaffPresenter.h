@@ -3,6 +3,8 @@
 #include <QGraphicsScene>
 #include "Staff.h"
 
+class QGraphicsPixmapItem;
+
 class StaffPresenter
 {
 public:
@@ -12,6 +14,10 @@ private:
 	void			init();
 	void			update();
 
-	Staff*			mStaff;
-	QGraphicsScene*	mGraphicsScene;
+	Staff*					mStaff;
+	QGraphicsScene*			mGraphicsScene;
+	QGraphicsPixmapItem*	mNoteItem;
+
+	static const float		mStaffLineSpacing;
+	static const float		mStaffWidth;
 };
