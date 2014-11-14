@@ -8,6 +8,8 @@ find_package(Qt5Widgets)
 
 
 set( SOURCE_FILES
+	Note.h
+	Note.cpp
 	Staff.h
 	Staff.cpp
 	StaffPresenter.h

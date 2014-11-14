@@ -7,10 +7,31 @@
 
 #include <StaffPresenter.h>
 
+#include "Note.h"
+#include <iostream>
+
 int main( int argc, char** argv )
 {
 	QApplication app(argc, argv);
 
+	
+	Note middleC(60);
+	std::cout << middleC.toString();
+	
+	Note la440(69);
+	std::cout << la440.toString();
+	
+	Note c0(12);
+	std::cout << c0.toString();
+	
+	Note a0(21);
+	std::cout << a0.toString();
+	
+	Note e3(52);
+	std::cout << e3.toString();
+	
+	Note c8(108);
+	std::cout << c8.toString();
 	
 	QWidget* mainWidget = new QWidget();
 	QVBoxLayout* mainLayout = new QVBoxLayout( mainWidget );
