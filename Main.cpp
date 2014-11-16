@@ -24,6 +24,9 @@ int main( int argc, char** argv )
 	Note c0(12);
 	std::cout << c0.toString();
 	
+	Note dsharp4(63);
+	std::cout << dsharp4.toString();
+
 	Note a0(21);
 	std::cout << a0.toString();
 	
@@ -43,8 +46,12 @@ int main( int argc, char** argv )
 	QPushButton* button = new QPushButton( "Start", mainWidget );
 	mainLayout->addWidget( button );
 
-	Staff staff;
-	staff.setSolKeyNote( 12 );
+	//Staff staff( StaffClef::SopranoClef );
+	Staff staff( StaffClef::TrebbleClef );
+
+	//staff.setNote( middleC );
+	staff.setNote( Note(60) );
+
 	StaffPresenter presenter( &staff, scene );
 
 	mainWidget->show();

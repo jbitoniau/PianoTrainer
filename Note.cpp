@@ -1,40 +1,79 @@
-#include "Note.h"
+ï»¿#include "Note.h"
 
 #include <sstream>
 #include <cmath>
 
-char* Note::mNoteNames[mNumNoteNames] = 
-//	 { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-	 { "Do", "Do#", "Ré", "Ré#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si" };
+const Note&	Note::EmptyNote(-1);
 
+
+char* Note::mNoteNames_SharpMode[mNumNoteNames] = 
+//	 { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+	 { "Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si" };	
+
+char* Note::mNoteNames_FlatMode[mNumNoteNames] = 
+     { "Do", "Re-b", "Re", "Mi-b", "Mi", "Fa", "Sol-b", "Sol", "La-b", "La", "Si-b", "Si" };		// Flat character should be \u266D
+
+Note::Note() 
+	: mNumber( EmptyNote.getNumber() )
+{
+}
 
 Note::Note( int number ) 
 	: mNumber(number)
 {
 }
 
-std::string	Note::getName( const Note& note )
+bool Note::operator==( const Note& otherNote ) const
 {
-	int noteNumber = note.getNumber();
+	return mNumber==otherNote.mNumber;
+}
+
+bool Note::operator!=( const Note& otherNote ) const
+{
+	return !operator==(otherNote);
+}
+	
+int	Note::getOctaveNumber( int noteNumber )
+{
+	if ( noteNumber<0 )
+		throw new std::exception("Can't get octave from Empty Note");
+	int octaveNumber = (noteNumber / mNumNoteNames) - 1;
+	return octaveNumber;
+}
+
+int Note::getIndexInOctave( int noteNumber )
+{
+	if ( noteNumber<0 )
+		throw new std::exception("Empty Note has no index in octave");
+	int indexInOctave = noteNumber % mNumNoteNames;
+	return indexInOctave;
+}
+
+std::string	Note::getName( int noteNumber, bool sharpMode )
+{
 	if ( noteNumber<0 )
 		return "invalid";
 
-	int octaveNumber = (noteNumber / mNumNoteNames) - 1;
-	int noteNumberInOctave = noteNumber % mNumNoteNames;
+	int octaveNumber = getOctaveNumber(noteNumber);
+	int indexInOctave = getIndexInOctave(noteNumber);
 	
+	std::string noteName;
+	if ( sharpMode )
+		noteName = mNoteNames_SharpMode[indexInOctave];
+	else
+		noteName = mNoteNames_FlatMode[indexInOctave];
+
 	std::stringstream stream;
-	stream << mNoteNames[noteNumberInOctave] << " " << octaveNumber;
+	stream << noteName << " " << octaveNumber;
 	return stream.str();
 }
 
 // See http://en.wikipedia.org/wiki/MIDI_Tuning_Standard
-double Note::getFrequency( const Note& note )
+double Note::getFrequency( int noteNumber )
 {
-	double noteNumber = static_cast<double>(note.getNumber());
-	if ( noteNumber<0.0 )
+	if ( noteNumber<0 )
 		return 0.0;
-	
-	double frequency = pow( 2.0, (noteNumber-69.0)/12.0 ) * 440.0;
+	double frequency = pow( 2.0, (static_cast<double>(noteNumber)-69.0)/12.0 ) * 440.0;
 	return frequency;
 }
 
@@ -42,7 +81,9 @@ std::string Note::toString() const
 {
 	std::stringstream stream;
 	stream << "Note number: " << getNumber() << " ";
-	stream << "name: " << getName() << " ";
+	stream << "name: " << getName(true) << " ";
+	if ( getName(true)!=getName(false) )
+		stream << "(or " << getName(false) << ") ";
 	stream << "frequency: " << getFrequency() << " ";
 	stream << std::endl;
 	return stream.str();
