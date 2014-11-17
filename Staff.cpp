@@ -1,37 +1,14 @@
 #include "Staff.h"
 
-/*
-	Clef
-*/
-Clef::Clef( const std::string& name, int indexInOctave )
-	:	mName(name), 
-		mIndexInOctave(indexInOctave)
-{
-}
-
-const Clef Clef::GClef( "Clef de Sol", 7 );		// G-Clef
-const Clef Clef::FClef( "Clef de Fa", 5 );		// F-Clef
-const Clef Clef::CClef( "Clef de Ut", 0 );		// C-Clef
-
-/*
-	StaffClef
-*/
-StaffClef::StaffClef( const std::string& name, const Clef& clef, int clefNoteNumber, int staffYPosition )
-	:	mName(name), 
-		mClef(clef),
-		mClefNoteNumber(clefNoteNumber),
-		mStaffYPosition(staffYPosition)
-{
-}
-
-const StaffClef StaffClef::TrebbleClef( "Clef de Sol 2eme", Clef::GClef, 67, 2 );
-const StaffClef StaffClef::BassClef( "Clef de Fa 4eme", Clef::FClef, 53, 6 );
-const StaffClef StaffClef::MezzoSopranoClef( "Clef d'Ut 2eme", Clef::CClef, 60, 2 );
-const StaffClef StaffClef::SopranoClef( "Clef d'Ut 1ere", Clef::CClef, 60, 0 );
-
-/*
-	Staff
-*/
+// Index in octave to note Y Pos in Soprano (Ut 1st line) when using sharp mode
+// In this key, there's a simple match between the note name (do, ré, mi, ...) and
+// its position in the staff:
+//	C (Do) is at 0th position, 0th line,
+//	D (Ré) is at 1st position, 0th interline,
+//	E (Mi) is at 2nd position, 1st line,
+//	etc...
+// The position depends on whether we want the note to be presented 
+// with a sharp or with a flat.
 int	 Staff::mIndexInOctaveToSopranoClefYPos_SharpMode[12] =	{ 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 }; 
 int	 Staff::mIndexInOctaveToSopranoClefYPos_FlatMode[12] =	{ 0, 1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6 };
 
@@ -46,6 +23,18 @@ void Staff::setNote( const Note& note )
 	mNote = note;
 }
 
+// To represent a note vertically on the staff, we assign a number
+// to each of its line and interline starting from the bottom. 
+// This is the staff coordinate system.
+// The bottom vertical position is 0 (Mi on a Sol key staff), 
+// then the interline above is 1 (Fa), 
+// then the line above is 2 (Sol), etc...
+// When the note lies on the "regular" lines/interlines of the staff
+// its vertical position is therefore between 0 and 8 (both included)
+// It is be negative or greater than 8 when the note lies outside 
+// regular staff lines/interlines. 
+// Ledger lines are required (when position is >9 or <-1) 
+// see http://en.wikipedia.org/wiki/Ledger_line
 int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const StaffClef& staffClef )
 {
 	int index = 0;
@@ -60,7 +49,7 @@ int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const Staf
 	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
 	int y = 0;
 	
-// if...	
+	// Use sharp mode here! This works because all staff keys are "regular" notes, i.e. non sharp or flat
 	y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
 	
 	int octaveYPosShift = (noteOctaveNumber-staffClefOctaveNumber) * 7;			// 7 is the number of note names in an octave... i.e. the number of Y pos
@@ -69,42 +58,8 @@ int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const Staf
 	y += mIndexInOctaveToSopranoClefYPos_SharpMode[noteIndexInOctave];
 
 	y += staffClefYPos;	// Finally shift everything to the line on which the key is
-
 	
 	return y;
-
-/*	int staffClefNoteNumber = staffClef.getClefNoteNumber();
-	int sopranoStaffClefNoteNumber = StaffClef::SopranoClef.getClefNoteNumber();
-	int deltaClef = staffClefNoteNumber - sopranoStaffClefNoteNumber;
-	index += deltaClef;
-
-	int indexInOctave = Note::getIndexInOctave( noteNumber );
-	index += indexInOctave;
-
-	index = index % Note::mNumNoteNames;
-
-	// Consider that the note is in the 4th octave and displayed on a staff in Soprano key (C4)
-	int y = 0;
-	if ( sharpMode )
-		y = mIndexInOctaveToSopranoClefYPos_SharpMode[index];
-	else
-		y = mIndexInOctaveToSopranoClefYPos_FlatMode[index];
-	*/
-
-/*	// Shift to note's octave
-	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
-	int yPosOctave = noteOctaveNumber * 11;
-	int y = yPosOctave * 11 + yPosInOctave
-
-	// Now shift the position to the right octave
-	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
-	int sopranoStaffClefNoteNumber = StaffClef::SopranoClef.getClefNoteNumber();
-	int sopranoOctaveNumber = Note::getOctaveNumber( sopranoStaffClefNoteNumber );
-	int deltaOctave = noteOctaveNumber - sopranoOctaveNumber;
-	
-	y += deltaOctave * 11;
-*/
-
 }
 
 

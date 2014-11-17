@@ -1,15 +1,11 @@
 #include "StaffPresenter.h"
 
-//#include <QGraphicsLineItem>
 #include <QImage>
 #include <QGraphicsPixmapItem>
 
 const float StaffPresenter::mStaffLineSpacing = 40;
 const float StaffPresenter::mStaffWidth = 400;
-/*
-int	 StaffPresenter::mIndexInOctaveToSopranoKeyYPos_SharpMode[12] =	{ 0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6 }; 
-int	 StaffPresenter::mIndexInOctaveToSopranoKeyYPos_FlatMode[12] =	{ 0, 1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6 };
-*/
+
 StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	: mStaff(staff),
 	  mGraphicsScene(graphicsScene),
@@ -108,43 +104,3 @@ qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const
 	qreal y = -1 * static_cast<qreal>(staffY) * (mStaffLineSpacing/2);
 	return y;
 }
-/*
-//int	getStaffYCoordinate( const Note& note ) const
-int	StaffPresenter::getStaffYCoordinate( const Note& note, bool useSharpPosition ) const		
-{
-	if ( note==Note::EmptyNote )
-		throw new std::exception("Invalid parameter");
-
-	int noteNumber = note.getNumber();
-	int staffY0NoteNumber = getStaffY0NoteNumber();
-	int y = noteNumber - staffY0NoteNumber;
-	return y;
-}
-
-int	StaffPresenter::getStaffYCoordinate( const Note& note, const Note& staffKeyNote, bool useSharpPosition )	
-{
-	if ( note==Note::EmptyNote )
-		throw new std::exception("Invalid parameter");
-	
-	int indexInOctave = note.getIndexInOctave();
-	int octaveNumber = note.getOctaveNumber();
-
-	int sopranoStaffYPos = 0;
-	if ( useSharpPosition )
-		sopranoStaffYPos = mIndexInOctaveToSopranoKeyYPos_SharpMode[indexInOctave];
-	else
-		sopranoStaffYPos = mIndexInOctaveToSopranoKeyYPos_FlatMode[indexInOctave];
-}*/
-
-
-// http://en.wikipedia.org/wiki/Clef#Individual_clefs
-/*
-int StaffPresenter::getStaffY0NoteNumber() const
-{
-	switch( mStaff->getKey() )
-	{
-		case Staff::Treble:	return 64;			// Mi4 E4
-		case Staff::Bass:	return 43;			// Sol2 G2
-	}
-	throw new std::exception("Unsupported staff key");
-}*/
