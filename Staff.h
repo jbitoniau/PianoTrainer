@@ -20,9 +20,9 @@ public:
 	const std::string&	getName() const				{ return mName; }
 	const int			getIndexInOctave() const	{ return mIndexInOctave; };
 
-	static const Clef GClef;
-	static const Clef FClef;
-	static const Clef CClef;
+	static const Clef	GClef;
+	static const Clef	FClef;
+	static const Clef	CClef;
 
 private:
 	std::string mName;

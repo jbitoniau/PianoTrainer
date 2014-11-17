@@ -12,7 +12,9 @@ int	 StaffPresenter::mIndexInOctaveToSopranoKeyYPos_FlatMode[12] =	{ 0, 1, 1, 2,
 */
 StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	: mStaff(staff),
-	  mGraphicsScene(graphicsScene)
+	  mGraphicsScene(graphicsScene),
+	  mNoteItem(NULL),
+	  mNoteLedgerLineItem(NULL)
 {
 	init();
 	update();
@@ -20,22 +22,19 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 
 void StaffPresenter::createKeyItem()
 {
-	/*QString resourceName;
-	if ( mStaff->getKey()==Staff::Treble )
-		resourceName = "GClef.png";
-	else if ( mStaff->getKey()==Staff::Bass )
-		resourceName = "FClef.png";
-	else
-		throw new std::exception("Unsupported staff key");
-
-	Note keyNote;
-	if ( mStaff->getKey()==Staff::Treble )
-		keyNote = Note(67);						// Sol4 - G4
-	else if ( mStaff->getKey()==Staff::Bass )
-		keyNote = Note(53);						// Fa3 - F3
-	else
-		throw new std::exception("Unsupported staff key");
-
+	int clefIndexInOctave = mStaff->getStaffClef().getClef().getIndexInOctave();
+	
+	QString resourceName;
+	switch ( clefIndexInOctave )
+	{
+		case 7 : resourceName="GClef.png";
+			break;
+		case 5 : resourceName="FClef.png";
+			break;
+		default:
+			throw new std::exception("Unsupported staff key");
+	}
+	
 	QImage image(resourceName);
 	int imageWidth = image.width();
 	int imageHeight = image.height();
@@ -47,16 +46,15 @@ void StaffPresenter::createKeyItem()
 	qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
 	pixmapItem->setScale( scaleFactor );
 
-	int staffY = getStaffYCoordinate( keyNote );
+	int staffY = mStaff->getStaffClef().getStaffYPosition();
 	qreal y=getSceneYFromStaffY(staffY);
-	pixmapItem->setPos( 0, (-desiredHeight/2) + y );*/
+	pixmapItem->setPos( 0, (-desiredHeight/2) + y );
 }
 
 
 void StaffPresenter::init()
 {
-	//int y0 = getBottomLineNoteNumber();
-
+	// Create the staff lines
 	for ( int i=0; i<5; ++i )
 	{
 		qreal y = getSceneYFromStaffY(i*2);
@@ -68,29 +66,6 @@ void StaffPresenter::init()
 
 	createKeyItem();
 	
-
-	// In GraphicsScene coordinate system, y goes from top to bottom of the screen when increasing
-/*	for ( int i=0; i<5; ++i )
-	{
-		qreal y = -1 * static_cast<qreal>(i) * mStaffLineSpacing;
-		if ( y==0 )
-			mGraphicsScene->addLine( 0, y, mStaffWidth*2, y );
-		else
-			mGraphicsScene->addLine( 0, y, mStaffWidth, y );
-	}*/
-
-/*	{
-		QImage image( "GClef.png" );
-		int imageWidth = image.width();
-		int imageHeight = image.height();
-		qreal desiredHeight = 200.0;
-		qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
-		QPixmap pixmap = QPixmap::fromImage(image);
-		QGraphicsPixmapItem* pixmapItem = mGraphicsScene->addPixmap( pixmap );
-		pixmapItem->setScale( scaleFactor );
-		pixmapItem->setPos( 0, (-desiredHeight/2) + mStaffLineSpacing * 3 );
-	}
-	*/
 	{
 		QImage image( "Note.png" );
 		int imageWidth = image.width();
@@ -101,6 +76,9 @@ void StaffPresenter::init()
 		mNoteItem = mGraphicsScene->addPixmap( pixmap );
 		mNoteItem->setScale( scaleFactor );
 		mNoteItem->setVisible(false);
+
+		QPen pen( Qt::red,  4 );
+		mNoteLedgerLineItem = mGraphicsScene->addLine( 0, 0, 10, 10, pen );
 	}
 }
 
@@ -121,6 +99,8 @@ void StaffPresenter::update()
 	int y = y0 - yOffset;
 	mNoteItem->setVisible(true);
 	mNoteItem->setPos( 200,  y );
+
+	mNoteLedgerLineItem->setLine( 0, -yOffset, 100, -yOffset );
 }
 
 qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const

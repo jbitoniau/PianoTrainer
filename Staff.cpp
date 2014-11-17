@@ -49,11 +49,34 @@ void Staff::setNote( const Note& note )
 int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const StaffClef& staffClef )
 {
 	int index = 0;
+	
+	int staffClefNoteNumber = staffClef.getClefNoteNumber();
+	
+	int staffClefIndexInOctave = Note::getIndexInOctave( staffClefNoteNumber );
+	int staffClefOctaveNumber = Note::getOctaveNumber( staffClefNoteNumber );
+	int staffClefYPos = staffClef.getStaffYPosition();
+
+	int noteIndexInOctave = Note::getIndexInOctave( noteNumber );
+	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
+	int y = 0;
+	
+// if...	
+	y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
+	
+	int octaveYPosShift = (noteOctaveNumber-staffClefOctaveNumber) * 7;			// 7 is the number of note names in an octave... i.e. the number of Y pos
+	y += octaveYPosShift;
+
+	y += mIndexInOctaveToSopranoClefYPos_SharpMode[noteIndexInOctave];
+
+	y += staffClefYPos;	// Finally shift everything to the line on which the key is
+
+	
+	return y;
 
 /*	int staffClefNoteNumber = staffClef.getClefNoteNumber();
 	int sopranoStaffClefNoteNumber = StaffClef::SopranoClef.getClefNoteNumber();
 	int deltaClef = staffClefNoteNumber - sopranoStaffClefNoteNumber;
-	index += deltaClef;*/
+	index += deltaClef;
 
 	int indexInOctave = Note::getIndexInOctave( noteNumber );
 	index += indexInOctave;
@@ -66,7 +89,7 @@ int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const Staf
 		y = mIndexInOctaveToSopranoClefYPos_SharpMode[index];
 	else
 		y = mIndexInOctaveToSopranoClefYPos_FlatMode[index];
-	
+	*/
 
 /*	// Shift to note's octave
 	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
@@ -82,7 +105,6 @@ int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const Staf
 	y += deltaOctave * 11;
 */
 
-	return y;
 }
 
 

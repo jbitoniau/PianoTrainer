@@ -42,6 +42,7 @@ private:
 	Staff*					mStaff;
 	QGraphicsScene*			mGraphicsScene;
 	QGraphicsPixmapItem*	mNoteItem;
+	QGraphicsLineItem*		mNoteLedgerLineItem;
 
 	static const float		mStaffLineSpacing;
 	static const float		mStaffWidth;
