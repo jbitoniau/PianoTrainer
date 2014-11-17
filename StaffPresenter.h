@@ -27,8 +27,5 @@ private:
 
 	static const float		mStaffLineSpacing;
 	static const float		mStaffWidth;
-	
-
-	/*static int				mIndexInOctaveToSopranoKeyYPos_SharpMode[Note::mNumNoteNames];		
-	static int				mIndexInOctaveToSopranoKeyYPos_FlatMode[Note::mNumNoteNames];*/
+	static const float		mNoteXPos;
 };

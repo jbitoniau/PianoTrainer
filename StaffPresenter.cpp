@@ -5,6 +5,7 @@
 
 const float StaffPresenter::mStaffLineSpacing = 40;
 const float StaffPresenter::mStaffWidth = 400;
+const float StaffPresenter::mNoteXPos = 200;
 
 StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	: mStaff(staff),
@@ -94,9 +95,9 @@ void StaffPresenter::update()
 	int yOffset = staffY * (mStaffLineSpacing/2);
 	int y = y0 - yOffset;
 	mNoteItem->setVisible(true);
-	mNoteItem->setPos( 200,  y );
+	mNoteItem->setPos( mNoteXPos,  y );
 
-	mNoteLedgerLineItem->setLine( 0, -yOffset, 100, -yOffset );
+	mNoteLedgerLineItem->setLine( mNoteXPos-50, -yOffset, mNoteXPos+50, -yOffset );
 }
 
 qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const
