@@ -40,6 +40,9 @@ public:
 	std::string			getName( bool sharpMode ) const	 { return getName( getNumber(), sharpMode ); }
 	static std::string	getName( int noteNumber, bool sharpMode );
 
+	bool				isSharpOrFlat() const		{ return isSharpOrFlat(getNumber()); }
+	static bool			isSharpOrFlat( int noteNumber );
+	
 	double				getFrequency() const		{ return getFrequency( getNumber() ); }
 	static double		getFrequency( int noteNumber );
 
@@ -51,4 +54,5 @@ private:
 	int					mNumber;
 	static char*		mNoteNames_SharpMode[mNumNoteNames];		
 	static char*		mNoteNames_FlatMode[mNumNoteNames];	
+	static bool			mIsSharpOrFlatNote[mNumNoteNames];
 };

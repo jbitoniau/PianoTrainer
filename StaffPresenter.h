@@ -32,6 +32,10 @@ private:
 	QGraphicsPixmapItem*	mNoteItem;
 	std::vector<QGraphicsLineItem*> mLedgerLines;
 
+	QPixmap					mNotePixmap;
+	QPixmap					mNoteSharpPixmap;
+	QPixmap					mNoteFlatPixmap;
+
 	static const float		mStaffLineSpacing;
 	static const float		mStaffWidth;
 	static const float		mNoteXPos;

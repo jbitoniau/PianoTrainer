@@ -13,7 +13,10 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	: mStaff(staff),
 	  mGraphicsScene(graphicsScene),
 	  mNoteItem(NULL),
-	  mLedgerLines()
+	  mLedgerLines(),
+	  mNotePixmap(),
+	  mNoteSharpPixmap(),
+	  mNoteFlatPixmap()
 {
 	init();
 	update();
@@ -61,19 +64,22 @@ void StaffPresenter::createStaffKeyItem()
 
 void StaffPresenter::createNoteItem()
 {
-	QImage image( "Note.png" );
-	int imageWidth = image.width();
-	int imageHeight = image.height();
+	int imageWidth = mNotePixmap.width();
+	int imageHeight = mNotePixmap.height();
 	qreal desiredHeight = 40.0;
 	qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
-	QPixmap pixmap = QPixmap::fromImage(image);
-	mNoteItem = mGraphicsScene->addPixmap( pixmap );
+
+	mNoteItem = mGraphicsScene->addPixmap( mNotePixmap );
 	mNoteItem->setScale( scaleFactor );
 	mNoteItem->setVisible(false);
 }
 
 void StaffPresenter::init()
 {
+	mNotePixmap = QPixmap( "Note.png" );
+	mNoteSharpPixmap = QPixmap( "NoteSharp.png" );
+	mNoteFlatPixmap = QPixmap( "NoteFlat.png" );
+
 	createStaffLineItems();
 	createStaffKeyItem();
 	createNoteItem();
@@ -89,7 +95,20 @@ void StaffPresenter::update()
 	}
 	mNoteItem->setVisible(true);
 
-	int staffY = mStaff->getStaffYPositionFromNote( note.getNumber(), true );
+	bool useSharpMode = true;		// This could be randomize
+
+	int staffY = mStaff->getStaffYPositionFromNote( note.getNumber(), useSharpMode );
+	bool isSharpOrFlat = Note::isSharpOrFlat( note.getNumber() );
+	
+	QPixmap pixmap = mNotePixmap;
+	if ( isSharpOrFlat )
+	{
+		if ( useSharpMode )
+			pixmap = mNoteSharpPixmap;
+		else
+			pixmap = mNoteFlatPixmap;
+	}
+	mNoteItem->setPixmap( pixmap );
 
 	int x0 = (-mNoteItem->pixmap().width() * mNoteItem->scale()) / 2;
 	int x = x0 + mNoteXPos;

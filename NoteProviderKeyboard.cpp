@@ -40,10 +40,10 @@ void NoteProviderKeyboard::keyPressEvent( QKeyEvent* event )
 				case Qt::Key_D : n = 1; break;
 				case Qt::Key_R : n = 3; break;
 				case Qt::Key_M : n = 4; break;
-				case Qt::Key_F : n = 5; break;
-				case Qt::Key_S : n = 6; break;
+				case Qt::Key_F : n = 6; break;
+				case Qt::Key_S : n = 8; break;
 				case Qt::Key_L : n = 10; break;
-				case Qt::Key_I : n = 0; break;
+				case Qt::Key_I : n = 11; break;
 			}
 		}
 		else

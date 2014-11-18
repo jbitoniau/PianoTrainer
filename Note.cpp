@@ -9,9 +9,13 @@ const Note&	Note::EmptyNote(-1);
 char* Note::mNoteNames_SharpMode[mNumNoteNames] = 
 //	 { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 	 { "Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si" };	
-
+	//  0     1      2      3     4      5     6      7      8       9      10    11
 char* Note::mNoteNames_FlatMode[mNumNoteNames] = 
      { "Do", "Re-b", "Re", "Mi-b", "Mi", "Fa", "Sol-b", "Sol", "La-b", "La", "Si-b", "Si" };		// Flat character should be \u266D
+
+bool  Note::mIsSharpOrFlatNote[mNumNoteNames] = 
+	{ false, true, false, true, false, false, true, false, true, false, true, false };
+
 
 Note::Note() 
 	: mNumber( EmptyNote.getNumber() )
@@ -67,6 +71,13 @@ std::string	Note::getName( int noteNumber, bool sharpMode )
 	stream << noteName << " " << octaveNumber;
 	return stream.str();
 }
+
+bool Note::isSharpOrFlat( int noteNumber )
+{
+	int indexInOctave = getIndexInOctave(noteNumber);
+	return mIsSharpOrFlatNote[indexInOctave];
+}
+
 
 // See http://en.wikipedia.org/wiki/MIDI_Tuning_Standard
 double Note::getFrequency( int noteNumber )

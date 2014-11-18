@@ -50,8 +50,11 @@ int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const Staf
 	int y = 0;
 	
 	// Use sharp mode here! This works because all staff keys are "regular" notes, i.e. non sharp or flat
-	y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
-	
+	if ( sharpMode )
+		y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
+	else 
+		y = -mIndexInOctaveToSopranoClefYPos_FlatMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
+
 	int octaveYPosShift = (noteOctaveNumber-staffClefOctaveNumber) * 7;			// 7 is the number of note names in an octave... i.e. the number of Y pos
 	y += octaveYPosShift;
 
