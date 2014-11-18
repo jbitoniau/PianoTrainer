@@ -9,10 +9,15 @@ class StaffPresenter
 {
 public:
 	StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene );
-	
+
+	Staff*			getStaff() const { return mStaff; }
+	QGraphicsScene*	getGraphicsScene() const { return mGraphicsScene; }
+
+	void			update();
+
 private:
 	void			init();
-	void			update();
+	
 
 	void			createStaffLineItems();
 	void			createStaffKeyItem();

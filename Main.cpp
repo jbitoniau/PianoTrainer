@@ -1,14 +1,13 @@
-//#include 
+#include <iostream>
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QBoxLayout>
 #include <QPushButton>
 
-#include <StaffPresenter.h>
-
 #include "Note.h"
-#include <iostream>
+#include "StaffPresenter.h"
+#include "NoteProviderKeyboard.h"
 
 int main( int argc, char** argv )
 {
@@ -36,7 +35,7 @@ int main( int argc, char** argv )
 	Note c8(108);
 	std::cout << c8.toString();
 	
-	QWidget* mainWidget = new QWidget();
+	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
 	QVBoxLayout* mainLayout = new QVBoxLayout( mainWidget );
 
 	QGraphicsScene*	scene = new QGraphicsScene();
@@ -47,8 +46,8 @@ int main( int argc, char** argv )
 	mainLayout->addWidget( button );
 
 	//Staff staff( StaffClef::SopranoClef );
-	//Staff staff( StaffClef::TrebbleClef );
-	Staff staff( StaffClef::BassClef );
+	Staff staff( StaffClef::TrebbleClef );
+	//Staff staff( StaffClef::BassClef );
 
 	//staff.setNote( middleC );
 	staff.setNote( Note(48) );
@@ -57,6 +56,8 @@ int main( int argc, char** argv )
 
 	mainWidget->show();
 	mainWidget->resize( 800, 600 );
+
+	mainWidget->setStuff( &presenter );
 		
 	int ret = app.exec();
 	
