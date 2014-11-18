@@ -18,6 +18,12 @@ set( SOURCE_FILES
 	Staff.cpp
 	StaffPresenter.h
 	StaffPresenter.cpp
+	NoteProvider.h
+	NoteProvider.cpp
+	NoteProviderMidi.h
+	NoteProviderMidi.cpp
+	NoteProviderKeyboard.h
+	NoteProviderKeyboard.cpp
 	main.cpp)
 
 source_group("" FILES ${SOURCE_FILES} )
