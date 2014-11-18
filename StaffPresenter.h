@@ -14,7 +14,9 @@ private:
 	void			init();
 	void			update();
 
-	void			createKeyItem();
+	void			createStaffLineItems();
+	void			createStaffKeyItem();
+	void			createNoteItem();
 	
 	// Return the vertical position in the scene (i.e. QGraphicsItem's 
 	// coordinate system)
@@ -23,9 +25,11 @@ private:
 	Staff*					mStaff;
 	QGraphicsScene*			mGraphicsScene;
 	QGraphicsPixmapItem*	mNoteItem;
-	QGraphicsLineItem*		mNoteLedgerLineItem;
+	std::vector<QGraphicsLineItem*> mLedgerLines;
 
 	static const float		mStaffLineSpacing;
 	static const float		mStaffWidth;
 	static const float		mNoteXPos;
+	static const float		mLedgerLineWidth;
+	static const QPen		mLinePen;
 };

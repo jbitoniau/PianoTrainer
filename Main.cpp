@@ -47,8 +47,8 @@ int main( int argc, char** argv )
 	mainLayout->addWidget( button );
 
 	//Staff staff( StaffClef::SopranoClef );
-	Staff staff( StaffClef::TrebbleClef );
-	//Staff staff( StaffClef::BassClef );
+	//Staff staff( StaffClef::TrebbleClef );
+	Staff staff( StaffClef::BassClef );
 
 	//staff.setNote( middleC );
 	staff.setNote( Note(48) );
