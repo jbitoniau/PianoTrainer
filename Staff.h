@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "Note.h"
 #include "StaffClef.h"
 
@@ -40,10 +41,21 @@ public:
 	int				getStaffYPositionFromNote( int noteNumber, bool sharpMode ) const		{ return getStaffYPositionFromNote(noteNumber, sharpMode, getStaffClef()); }
 	static int		getStaffYPositionFromNote( int noteNumber, bool sharpMode, const StaffClef& staffClef );
 
+	class Listener
+	{
+	public:
+		virtual ~Listener();
+		virtual void onNoteChanged( Staff* staff, const Note& note ) {}
+	};
+	void			addListener( Listener* listener );
+
 private:
 	static int		mIndexInOctaveToSopranoClefYPos_SharpMode[Note::mNumNoteNames];		
 	static int		mIndexInOctaveToSopranoClefYPos_FlatMode[Note::mNumNoteNames];
 
+	void			notifyListeners();
+
 	StaffClef		mStaffClef;
 	Note			mNote;
+	std::vector<Listener*> mListeners;
 };

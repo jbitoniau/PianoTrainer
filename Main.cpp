@@ -12,7 +12,6 @@
 int main( int argc, char** argv )
 {
 	QApplication app(argc, argv);
-
 	
 	Note middleC(60);
 	std::cout << middleC.toString();

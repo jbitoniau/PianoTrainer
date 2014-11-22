@@ -104,7 +104,7 @@ void StaffPresenter::update()
 	}
 	mNoteItem->setVisible(true);
 
-	bool useSharpMode = true;		// This could be randomize
+	bool useSharpMode = false;		// This could be randomize
 
 	int staffY = mStaff->getStaffYPositionFromNote( note.getNumber(), useSharpMode );
 	bool isSharpOrFlat = Note::isSharpOrFlat( note.getNumber() );

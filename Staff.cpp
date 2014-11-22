@@ -20,7 +20,10 @@ Staff::Staff( const StaffClef& staffClef )
 
 void Staff::setNote( const Note& note ) 
 {
+	if ( mNote==note )
+		return;
 	mNote = note;
+	notifyListeners();	
 }
 
 // To represent a note vertically on the staff, we assign a number
@@ -37,32 +40,48 @@ void Staff::setNote( const Note& note )
 // see http://en.wikipedia.org/wiki/Ledger_line
 int Staff::getStaffYPositionFromNote( int noteNumber, bool sharpMode, const StaffClef& staffClef )
 {
-	int index = 0;
-	
+	// Get properties of the staff clef 
 	int staffClefNoteNumber = staffClef.getClefNoteNumber();
-	
 	int staffClefIndexInOctave = Note::getIndexInOctave( staffClefNoteNumber );
 	int staffClefOctaveNumber = Note::getOctaveNumber( staffClefNoteNumber );
 	int staffClefYPos = staffClef.getStaffYPosition();
 
+	// Get properties of the note to display
 	int noteIndexInOctave = Note::getIndexInOctave( noteNumber );
 	int noteOctaveNumber = Note::getOctaveNumber( noteNumber );
-	int y = 0;
 	
-	// Use sharp mode here! This works because all staff keys are "regular" notes, i.e. non sharp or flat
-	if ( sharpMode )
-		y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
-	else 
-		y = -mIndexInOctaveToSopranoClefYPos_FlatMode[staffClefIndexInOctave];	// YPos for Do in same octave as StaffKey
-
-	int octaveYPosShift = (noteOctaveNumber-staffClefOctaveNumber) * 7;			// 7 is the number of note names in an octave... i.e. the number of Y pos
+	// For now, we consider that the staff key is displayed on the first line (Staff key Y-Pos=0). 
+	// First we get the Y Pos of the C-note (Do) that is just below (or identical) to the staff key note.
+	// It is usually a just a few Y-Pos below.
+	// We use sharp mode in the calculation here. This works because all standard staff keys (treble, bass, etc...) 
+	// are "plain" notes (i.e. non sharp or flat). We could therefore use either the SharpMode or FlatMode 
+	// version here as it would return the same thing.
+	int y = -mIndexInOctaveToSopranoClefYPos_SharpMode[staffClefIndexInOctave];		
+	
+	// Then we shift the Y Pos to take into consideration the octave of the note. 
+	int octaveYPosShift = (noteOctaveNumber-staffClefOctaveNumber) * 7;			// 7 is the number of note names in an octave, i.e. the number of Y Pos to move from one octave to the next
 	y += octaveYPosShift;
 
-	y += mIndexInOctaveToSopranoClefYPos_SharpMode[noteIndexInOctave];
+	// Then we shift the Y Pos to take into consideration the note in its octave.
+	if ( sharpMode )
+		y += mIndexInOctaveToSopranoClefYPos_SharpMode[noteIndexInOctave];
+	else
+		y += mIndexInOctaveToSopranoClefYPos_FlatMode[noteIndexInOctave];	
 
-	y += staffClefYPos;	// Finally shift everything to the line on which the key is
+	// Finally shift everything to the line on which the key is displayed on the staff 
+	y += staffClefYPos;	
 	
 	return y;
 }
 
+void Staff::addListener( Listener* listener )
+{
+	mListeners.push_back( listener );
+}
+
+void Staff::notifyListeners()
+{
+	for ( std::size_t i=0; i<mListeners.size(); ++i )
+		mListeners[i]->onNoteChanged( this, getNote() );
+}
 
