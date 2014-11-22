@@ -17,21 +17,21 @@ public:
 
 private:
 	void			init();
-	
 
 	void			createStaffLineItems();
 	void			createStaffKeyItem();
 	void			createNoteItem();
+	void			createNoteNameItem();
 	
-	// Return the vertical position in the scene (i.e. QGraphicsItem's 
-	// coordinate system)
+	// Return the vertical position in the scene (i.e. QGraphicsItem's coordinate system)
 	qreal			getSceneYFromStaffY( int y ) const;
 
 	Staff*					mStaff;
 	QGraphicsScene*			mGraphicsScene;
 	QGraphicsPixmapItem*	mNoteItem;
 	std::vector<QGraphicsLineItem*> mLedgerLines;
-
+	QGraphicsTextItem*		mNoteNameItem;
+	
 	QPixmap					mNotePixmap;
 	QPixmap					mNoteSharpPixmap;
 	QPixmap					mNoteFlatPixmap;

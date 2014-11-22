@@ -48,10 +48,9 @@ int main( int argc, char** argv )
 	//Staff staff( StaffClef::SopranoClef );
 	Staff staff( StaffClef::TrebbleClef );
 	//Staff staff( StaffClef::BassClef );
-
 	//staff.setNote( middleC );
-	staff.setNote( Note(48) );
-
+	//staff.setNote( Note(48) );
+	
 	StaffPresenter presenter( &staff, scene );
 
 	mainWidget->show();

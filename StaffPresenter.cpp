@@ -14,6 +14,7 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	  mGraphicsScene(graphicsScene),
 	  mNoteItem(NULL),
 	  mLedgerLines(),
+	  mNoteNameItem(NULL),
 	  mNotePixmap(),
 	  mNoteSharpPixmap(),
 	  mNoteFlatPixmap()
@@ -74,6 +75,13 @@ void StaffPresenter::createNoteItem()
 	mNoteItem->setVisible(false);
 }
 
+void StaffPresenter::createNoteNameItem()
+{
+	mNoteNameItem = mGraphicsScene->addText( "..." );
+	mNoteNameItem->setPos( mStaffWidth, -5 * mStaffLineSpacing / 2 );
+	mNoteNameItem->setScale( 4 );
+}
+
 void StaffPresenter::init()
 {
 	mNotePixmap = QPixmap( "Note.png" );
@@ -83,6 +91,7 @@ void StaffPresenter::init()
 	createStaffLineItems();
 	createStaffKeyItem();
 	createNoteItem();
+	createNoteNameItem();
 }
 
 void StaffPresenter::update()
@@ -144,6 +153,8 @@ void StaffPresenter::update()
 			mLedgerLines.push_back( line );
 		}
 	}
+
+	mNoteNameItem->setPlainText( note.getName(true).c_str() );
 }
 
 qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const
