@@ -15,6 +15,9 @@ public:
 
 	void			update();
 
+	void			setText( const QString& text );
+	void			setNoteNameVisible( bool value );
+
 private:
 	void			onNoteChanged( Staff* staff, const Note& note );
 	
@@ -32,6 +35,7 @@ private:
 	QGraphicsPixmapItem*	mNoteItem;
 	std::vector<QGraphicsLineItem*> mLedgerLines;
 	QGraphicsTextItem*		mNoteNameItem;
+	QGraphicsTextItem*		mTextItem;
 	
 	QPixmap					mNotePixmap;
 	QPixmap					mNoteSharpPixmap;

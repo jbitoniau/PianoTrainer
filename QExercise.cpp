@@ -1,21 +1,28 @@
 #include "QExercise.h"
 
 #include <assert.h>
+#include <cstdlib>
+#include <time.h>
+#include <QDateTime>
 
 QExercise::QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent )
 	:	QObject(parent),
 		mPresenter(presenter),
 		mNoteProvider(noteProvider),
 		mTimer(NULL),
+		mTime(),
 		mState(Stopped),
 		mCounter(0),
 		mNoteToFind(),
-		mNoteAnswered()
+		mNoteAnswered(),
+		mAnswerTimeInMs(0),
+		mIgnoreOctaveNumberInAnswer(true),
+		mChooseOnlyPlainNotes(true)	
 {
 	mNoteProvider->addListener(this);
 
 	mTimer = new QTimer(this);
-	mTimer->setInterval( 1000 );	
+	mTimer->setInterval( 200 );	
 	bool ret = connect( mTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()) );
 	assert( ret );
 }
@@ -24,6 +31,11 @@ void QExercise::start()
 {
 	if ( mState!=Stopped )
 		return;
+
+	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);
+	assert( mLog.is_open() );
+	mLog << "#NoteToFindNum;NoteToFindName;AnsweredNoteNum;AnsweredNoteName;AnswerTimeInMs;OK" << std::endl;
+
 	nextState();
 }
 
@@ -31,7 +43,12 @@ void QExercise::stop()
 {
 	if ( mState==Stopped )
 		return;
+	
+	mLog.close();
+
 	// Clear text and stuff
+	mPresenter->setText("...");
+	mPresenter->getStaff()->setNote( Note() );	
 	mTimer->stop();
 	mState = Stopped;
 }
@@ -51,6 +68,7 @@ void QExercise::nextState()
 void QExercise::startCountDown()
 {
 	mState = CountDown;
+	mCounter = 0;
 	mTimer->start();
 }
 
@@ -59,11 +77,12 @@ void QExercise::updateCountDown()
 	mCounter++;
 	if ( mCounter<=3 )
 	{	
-		// setText 3...2..1..
+	//	QString text = QString("%1").arg( mCounter );
+	//	mPresenter->setText( text );
 	}
 	else
 	{
-		//setText("GO!");
+		mPresenter->setText("GO!");
 		mTimer->stop();
 		nextState();
 	}
@@ -75,17 +94,39 @@ void QExercise::startWaitForAnswer()
 	// calculate answer time
 	// store info with note and stuff
 	mState = WaitForAnswer;
-	mNoteToFind = Note( 60 );
-	//mNoteDisplayedTime = currentTime;
+
+	mPresenter->setNoteNameVisible(false);
+
+	int minNoteNumber = 60;
+	int maxNoteNumber = 79;
+	int noteNumber = -1;
+	int range = maxNoteNumber - minNoteNumber + 1;		// +1 to include max note number
+	srand(time(NULL));
+	while ( noteNumber==-1 )
+	{
+		noteNumber = (rand() % range) + minNoteNumber;
+		if ( mChooseOnlyPlainNotes )
+			if ( Note::isSharpOrFlat(noteNumber) )
+				noteNumber=-1;
+	}
+	mNoteToFind = Note( noteNumber );
+	mPresenter->getStaff()->setNote( mNoteToFind );
+	mTime.start();
 }
 
 void QExercise::startCheckAnswer()
 {
-	mState = WaitForAnswer;
+	mState = CheckAnswer;
 	
+	mAnswerTimeInMs = mTime.elapsed();
+
+	mPresenter->setNoteNameVisible(true);
+
 	bool success = false;
 	if ( mIgnoreOctaveNumberInAnswer )
 	{
+		if ( mNoteToFind.getIndexInOctave()==mNoteAnswered.getIndexInOctave() )
+			success=true;
 	}
 	else
 	{
@@ -94,13 +135,22 @@ void QExercise::startCheckAnswer()
 	}
 
 	if ( success )
-	{
-		// setText OK
-	}
+		mPresenter->setText("OK!");
 	else
-	{
-		// setText WRONG!
-	}
+		mPresenter->setText("WRONG!");
+
+	//mPresenter->getStaff()->setNote( Note() );
+	QString dateTime = QDateTime::currentDateTime().toString();
+	QByteArray dateTimeData = dateTime.toUtf8();
+	mLog << dateTimeData.constData() << ";";
+	mLog << mNoteToFind.getNumber() << ";";
+	mLog << mNoteToFind.getNumber() << ";";
+	mLog << mNoteToFind.getName(true) << ";";
+	mLog << mNoteAnswered.getNumber() << ";";
+	mLog << mNoteAnswered.getName(true) << ";";
+	mLog << mAnswerTimeInMs << ";";
+	mLog << success << ";";
+	mLog << std::endl;
 
 	nextState();
 }
@@ -116,7 +166,9 @@ void QExercise::onNoteReceived( NoteProvider* noteProvider, const Note& note )
 {
 	if ( mState!=WaitForAnswer )
 		return;
+
 	mNoteAnswered = note;
+	
 	nextState();
 }
 	

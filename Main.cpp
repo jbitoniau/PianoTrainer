@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -28,8 +29,10 @@ int main( int argc, char** argv )
 	QGraphicsScene*	scene = new QGraphicsScene();
 	QGraphicsView* view = new QGraphicsView( scene, mainWidget );
 	mainLayout->addWidget( view );
-	QPushButton* button = new QPushButton( "Start", mainWidget );
-	mainLayout->addWidget( button );
+	QPushButton* startButton = new QPushButton( "Start", mainWidget );
+	mainLayout->addWidget( startButton );
+	QPushButton* stopButton = new QPushButton( "Stop", mainWidget );
+	mainLayout->addWidget( stopButton );
 
 	// Create the model presenter	
 	StaffPresenter staffPresenter( &staff, scene );
@@ -40,6 +43,10 @@ int main( int argc, char** argv )
 
 	// Create the exercise
 	QExercise* exercise = new QExercise( &staffPresenter, noteProvider, mainWidget );
+	bool r = startButton->connect( startButton, SIGNAL( pressed() ), exercise, SLOT( start() ) );
+	assert(r);
+	r = stopButton->connect( stopButton, SIGNAL( pressed() ), exercise, SLOT( stop() ) );
+	assert(r);
 
 	// Start the app
 	mainWidget->show();

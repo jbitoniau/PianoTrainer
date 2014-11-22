@@ -15,9 +15,10 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 	  mNoteItem(NULL),
 	  mLedgerLines(),
 	  mNoteNameItem(NULL),
+	  mTextItem(NULL),
 	  mNotePixmap(),
 	  mNoteSharpPixmap(),
-	  mNoteFlatPixmap()
+	  mNoteFlatPixmap()	  
 {
 	init();
 	update();
@@ -99,11 +100,23 @@ void StaffPresenter::init()
 	createStaffKeyItem();
 	createNoteItem();
 	createNoteNameItem();
+
+	mTextItem = mGraphicsScene->addText( "" );
+	mTextItem->setPos( mStaffWidth, -8 * mStaffLineSpacing / 2 );
+	mTextItem->setScale( 4 );
 }
 
 void StaffPresenter::update()
 {
 	const Note& note = mStaff->getNote();
+	std::string noteName = note.getName(true);
+	
+	mNoteNameItem->setPlainText( noteName.c_str() );
+
+	for ( int i=0; i<mLedgerLines.size(); ++i )
+		mGraphicsScene->removeItem( mLedgerLines[i] );
+	mLedgerLines.clear();
+
 	if ( note==Note::EmptyNote )
 	{
 		mNoteItem->setVisible(false);
@@ -135,10 +148,6 @@ void StaffPresenter::update()
 	mNoteItem->setVisible(true);
 	mNoteItem->setPos( x,  y );
 
-	for ( int i=0; i<mLedgerLines.size(); ++i )
-		mGraphicsScene->removeItem( mLedgerLines[i] );
-	mLedgerLines.clear();
-
 	const float mLedgerLineHalfWidth = mLedgerLineWidth / 2.f;
 	if ( staffY<0 )
 	{
@@ -160,12 +169,20 @@ void StaffPresenter::update()
 			mLedgerLines.push_back( line );
 		}
 	}
-
-	mNoteNameItem->setPlainText( note.getName(true).c_str() );
 }
 
 qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const
 {
 	qreal y = -1 * static_cast<qreal>(staffY) * (mStaffLineSpacing/2);
 	return y;
+}
+
+void StaffPresenter::setText( const QString& text )
+{
+	mTextItem->setPlainText(text); 
+}
+
+void StaffPresenter::setNoteNameVisible( bool value )
+{
+	mNoteNameItem->setVisible(value); 
 }

@@ -1,7 +1,8 @@
 #pragma once
 
+#include <fstream>
+#include <QTime>
 #include <QTimer>
-
 #include "StaffPresenter.h"
 #include "NoteProvider.h"
 
@@ -37,17 +38,20 @@ private:
 	void			startWaitForAnswer();
 	void			startCheckAnswer();
 
-	bool			mIgnoreOctaveNumberInAnswer;
-
 	StaffPresenter*	mPresenter;
 	NoteProvider*   mNoteProvider;
 	QTimer*			mTimer;
-	
+	QTime			mTime;
+
 	State			mState;
 	int				mCounter;
 
 	Note			mNoteToFind;
 	Note			mNoteAnswered;
-	//int			mNoteDisplayedTime;
+	int				mAnswerTimeInMs;		
+
+	bool			mIgnoreOctaveNumberInAnswer;
+	bool			mChooseOnlyPlainNotes;
+	std::fstream 	mLog;
 };
 

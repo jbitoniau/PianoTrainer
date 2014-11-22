@@ -56,7 +56,7 @@ int Note::getIndexInOctave( int noteNumber )
 std::string	Note::getName( int noteNumber, bool sharpMode )
 {
 	if ( noteNumber<0 )
-		return "invalid";
+		return "";
 
 	int octaveNumber = getOctaveNumber(noteNumber);
 	int indexInOctave = getIndexInOctave(noteNumber);
