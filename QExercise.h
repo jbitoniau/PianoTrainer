@@ -45,6 +45,7 @@ private:
 
 	State			mState;
 	int				mCounter;
+	int				mNoteCount;
 
 	Note			mNoteToFind;
 	Note			mNoteAnswered;

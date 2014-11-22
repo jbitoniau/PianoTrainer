@@ -13,11 +13,12 @@ QExercise::QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QOb
 		mTime(),
 		mState(Stopped),
 		mCounter(0),
+		mNoteCount(0),
 		mNoteToFind(),
 		mNoteAnswered(),
 		mAnswerTimeInMs(0),
 		mIgnoreOctaveNumberInAnswer(true),
-		mChooseOnlyPlainNotes(true)	
+		mChooseOnlyPlainNotes(true)
 {
 	mNoteProvider->addListener(this);
 
@@ -32,9 +33,10 @@ void QExercise::start()
 	if ( mState!=Stopped )
 		return;
 
+	mNoteCount = 0;
 	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);
 	assert( mLog.is_open() );
-	mLog << "#NoteToFindNum;NoteToFindName;AnsweredNoteNum;AnsweredNoteName;AnswerTimeInMs;OK" << std::endl;
+	mLog << "#DateTime;NoteToFindNum;NoteToFindName;AnsweredNoteNum;AnsweredNoteName;AnswerTimeInMs;OK" << std::endl;
 
 	nextState();
 }
@@ -45,6 +47,7 @@ void QExercise::stop()
 		return;
 	
 	mLog.close();
+	mNoteCount = 0;
 
 	// Clear text and stuff
 	mPresenter->setText("...");
@@ -139,11 +142,13 @@ void QExercise::startCheckAnswer()
 	else
 		mPresenter->setText("WRONG!");
 
+	mNoteCount++;
+
 	//mPresenter->getStaff()->setNote( Note() );
 	QString dateTime = QDateTime::currentDateTime().toString();
 	QByteArray dateTimeData = dateTime.toUtf8();
 	mLog << dateTimeData.constData() << ";";
-	mLog << mNoteToFind.getNumber() << ";";
+	mLog << mNoteCount << ";";
 	mLog << mNoteToFind.getNumber() << ";";
 	mLog << mNoteToFind.getName(true) << ";";
 	mLog << mNoteAnswered.getNumber() << ";";
