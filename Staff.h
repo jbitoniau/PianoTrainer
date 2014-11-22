@@ -50,8 +50,8 @@ public:
 	void			addListener( Listener* listener );
 
 private:
-	static int		mIndexInOctaveToSopranoClefYPos_SharpMode[Note::mNumNoteNames];		
-	static int		mIndexInOctaveToSopranoClefYPos_FlatMode[Note::mNumNoteNames];
+	static int		mIndexInOctaveToSopranoClefYPos_SharpMode[Note::mNumSemitones];		
+	static int		mIndexInOctaveToSopranoClefYPos_FlatMode[Note::mNumSemitones];
 
 	void			notifyListeners();
 

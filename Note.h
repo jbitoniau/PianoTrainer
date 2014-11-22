@@ -48,11 +48,11 @@ public:
 
 	std::string			toString() const;
 	
-	static const int	mNumNoteNames = 12;
+	static const int	mNumSemitones = 12;
 	
 private:
 	int					mNumber;
-	static char*		mNoteNames_SharpMode[mNumNoteNames];		
-	static char*		mNoteNames_FlatMode[mNumNoteNames];	
-	static bool			mIsSharpOrFlatNote[mNumNoteNames];
+	static char*		mNoteNames_SharpMode[mNumSemitones];		
+	static char*		mNoteNames_FlatMode[mNumSemitones];	
+	static bool			mIsSharpOrFlatNote[mNumSemitones];
 };

@@ -8,11 +8,50 @@
 #include "Note.h"
 #include "StaffPresenter.h"
 #include "NoteProviderKeyboard.h"
+#include "QNoteProviderUpdater.h"
+#include "QExercise.h"
+
+void testNotes();
 
 int main( int argc, char** argv )
 {
+	testNotes();
+
 	QApplication app(argc, argv);
 	
+	// Create the model
+	Staff staff( StaffClef::TrebbleClef );
+	
+	// Create the user interface
+	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
+	QVBoxLayout* mainLayout = new QVBoxLayout( mainWidget );
+	QGraphicsScene*	scene = new QGraphicsScene();
+	QGraphicsView* view = new QGraphicsView( scene, mainWidget );
+	mainLayout->addWidget( view );
+	QPushButton* button = new QPushButton( "Start", mainWidget );
+	mainLayout->addWidget( button );
+
+	// Create the model presenter	
+	StaffPresenter staffPresenter( &staff, scene );
+
+	// Create the note provider and its updater
+	NoteProvider* noteProvider = mainWidget;
+	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 100, mainWidget );
+
+	// Create the exercise
+	QExercise* exercise = new QExercise( &staffPresenter, noteProvider, mainWidget );
+
+	// Start the app
+	mainWidget->show();
+	mainWidget->resize( 800, 600 );
+	int ret = app.exec();
+	
+	return ret ;
+}
+
+
+void testNotes()
+{
 	Note middleC(60);
 	std::cout << middleC.toString();
 	
@@ -33,31 +72,4 @@ int main( int argc, char** argv )
 	
 	Note c8(108);
 	std::cout << c8.toString();
-	
-	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
-	QVBoxLayout* mainLayout = new QVBoxLayout( mainWidget );
-
-	QGraphicsScene*	scene = new QGraphicsScene();
-	QGraphicsView* view = new QGraphicsView( scene, mainWidget );
-	mainLayout->addWidget( view );
-
-	QPushButton* button = new QPushButton( "Start", mainWidget );
-	mainLayout->addWidget( button );
-
-	//Staff staff( StaffClef::SopranoClef );
-	Staff staff( StaffClef::TrebbleClef );
-	//Staff staff( StaffClef::BassClef );
-	//staff.setNote( middleC );
-	//staff.setNote( Note(48) );
-	
-	StaffPresenter presenter( &staff, scene );
-
-	mainWidget->show();
-	mainWidget->resize( 800, 600 );
-
-	mainWidget->setStuff( &presenter );
-		
-	int ret = app.exec();
-	
-	return ret ;
 }

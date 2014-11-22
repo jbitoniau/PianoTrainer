@@ -14,17 +14,15 @@ public:
 	NoteProviderKeyboard( QWidget* parent=NULL, Qt::WindowFlags flags=0 );
 	virtual ~NoteProviderKeyboard();	
 
-	virtual Note getNote();
+	virtual void update();
 	
-	void setStuff( StaffPresenter* staffPresenter )	{ mStaffPresenter = staffPresenter; }
-
 protected:
 	virtual void keyPressEvent( QKeyEvent* event );
 	virtual void keyReleaseEvent( QKeyEvent* event );
 
 private:
+	Note	getNote() const;
 	int		mIndexNoteInOctave;
 	int		mOctaveIndex;
-
-	StaffPresenter* mStaffPresenter;
+	bool	mNoteReady;
 };

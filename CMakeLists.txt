@@ -24,6 +24,10 @@ set( SOURCE_FILES
 	NoteProviderMidi.cpp
 	NoteProviderKeyboard.h
 	NoteProviderKeyboard.cpp
+	QNoteProviderUpdater.h
+	QNoteProviderUpdater.cpp
+	QExercise.h
+	QExercise.cpp
 	main.cpp)
 
 source_group("" FILES ${SOURCE_FILES} )

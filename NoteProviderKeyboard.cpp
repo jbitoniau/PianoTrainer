@@ -2,14 +2,11 @@
 
 #include <QKeyEvent>
 
-#include "StaffPresenter.h" //!!!!!!
-
 NoteProviderKeyboard::NoteProviderKeyboard( QWidget* parent, Qt::WindowFlags flags )
 	: QWidget( parent, flags ),
 	  mIndexNoteInOctave(0),
 	  mOctaveIndex(4),
-
-	  mStaffPresenter(0)
+	  mNoteReady(false)
 {
 }
 
@@ -17,7 +14,17 @@ NoteProviderKeyboard::~NoteProviderKeyboard()
 {
 }
 
-Note NoteProviderKeyboard::getNote()
+void NoteProviderKeyboard::update()
+{
+	if ( !mNoteReady )
+		return;
+
+	Note note = getNote();
+	notifyListeners(note);
+	mNoteReady = false;
+}
+
+Note NoteProviderKeyboard::getNote() const
 {
 	int noteNumber = (mOctaveIndex+1) * 12 + mIndexNoteInOctave;
 	return Note(noteNumber);
@@ -62,13 +69,10 @@ void NoteProviderKeyboard::keyPressEvent( QKeyEvent* event )
 		if ( n!=-1 )
 			mIndexNoteInOctave = n;
 
-		//!!!
-		if ( n!=-1 && mStaffPresenter )
-		{
-			Note note = getNote();
-			mStaffPresenter->getStaff()->setNote(note);
-			mStaffPresenter->update();
-		}
+		// If a note name has been pressed, we'll notify listeners
+		// at the next update. No notification happens on octave change though.
+		if ( n!=-1 )
+			mNoteReady = true;
 	}		
 }
 
