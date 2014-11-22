@@ -21,6 +21,13 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
 {
 	init();
 	update();
+
+	staff->addListener(this);
+}
+
+void StaffPresenter::onNoteChanged( Staff* staff, const Note& note )
+{
+	update();
 }
 
 void StaffPresenter::createStaffLineItems()

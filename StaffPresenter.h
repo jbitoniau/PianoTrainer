@@ -5,7 +5,7 @@
 
 class QGraphicsPixmapItem;
 
-class StaffPresenter
+class StaffPresenter : public Staff::Listener
 {
 public:
 	StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene );
@@ -16,8 +16,9 @@ public:
 	void			update();
 
 private:
+	void			onNoteChanged( Staff* staff, const Note& note );
+	
 	void			init();
-
 	void			createStaffLineItems();
 	void			createStaffKeyItem();
 	void			createNoteItem();

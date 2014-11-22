@@ -44,7 +44,7 @@ public:
 	class Listener
 	{
 	public:
-		virtual ~Listener();
+		virtual ~Listener() {}
 		virtual void onNoteChanged( Staff* staff, const Note& note ) {}
 	};
 	void			addListener( Listener* listener );
