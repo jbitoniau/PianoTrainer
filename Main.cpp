@@ -22,6 +22,7 @@ int main( int argc, char** argv )
 	
 	// Create the model
 	Staff staff( StaffClef::TrebbleClef );
+	//Staff staff( StaffClef::BassClef );
 	
 	// Create the user interface
 	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		

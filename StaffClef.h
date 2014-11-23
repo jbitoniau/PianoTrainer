@@ -22,6 +22,9 @@ class StaffClef
 public:
 	StaffClef( const std::string& name, const Clef& clef, int clefNoteNumber, int staffYPosition );
 
+	bool operator==( const StaffClef& other ) const;
+	bool operator!=( const StaffClef& other ) const;
+
 	const std::string&	getName() const				{ return mName; }
 	const Clef&			getClef() const				{ return mClef; }
 	int					getClefNoteNumber() const	{ return mClefNoteNumber; }

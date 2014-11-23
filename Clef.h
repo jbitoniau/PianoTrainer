@@ -16,7 +16,10 @@ class Clef
 {
 public:
 	Clef( const std::string& name, int indexInOctave );		// The index is just another way of naming the key. It doesn't carry any meaningful information
-	
+
+	bool operator==( const Clef& other ) const;
+	bool operator!=( const Clef& other ) const;
+
 	const std::string&	getName() const				{ return mName; }
 	const int			getIndexInOctave() const	{ return mIndexInOctave; };
 

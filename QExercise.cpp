@@ -36,7 +36,7 @@ void QExercise::start()
 	mNoteCount = 0;
 	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);
 	assert( mLog.is_open() );
-	mLog << "#DateTime;NoteToFindNum;NoteToFindName;AnsweredNoteNum;AnsweredNoteName;AnswerTimeInMs;OK" << std::endl;
+	mLog << "#DateTime;Count;NoteToFindNum;NoteToFindName;AnsweredNoteNum;AnsweredNoteName;AnswerTimeInMs;OK" << std::endl;
 
 	nextState();
 }
@@ -101,7 +101,17 @@ void QExercise::startWaitForAnswer()
 	mPresenter->setNoteNameVisible(false);
 
 	int minNoteNumber = 60;
-	int maxNoteNumber = 79;
+	int maxNoteNumber = 60;	
+	if ( mPresenter->getStaff()->getStaffClef()==StaffClef::TrebbleClef )
+	{
+		minNoteNumber = 60;
+		maxNoteNumber = 79;
+	}
+	else if ( mPresenter->getStaff()->getStaffClef()==StaffClef::BassClef )
+	{
+		minNoteNumber = 41;
+		maxNoteNumber = 60;
+	}
 	int noteNumber = -1;
 	int range = maxNoteNumber - minNoteNumber + 1;		// +1 to include max note number
 	srand(time(NULL));

@@ -18,8 +18,8 @@ public:
 	Note();
 	Note( int number );
 
-	bool operator==( const Note& otherNote ) const;
-	bool operator!=( const Note& otherNote ) const;
+	bool operator==( const Note& other ) const;
+	bool operator!=( const Note& other ) const;
 
 	// Return the MIDI number of the note. In this numbering scheme,
 	// Middle C is defined as number 60. This means that on a regular 

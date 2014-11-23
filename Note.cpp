@@ -27,14 +27,14 @@ Note::Note( int number )
 {
 }
 
-bool Note::operator==( const Note& otherNote ) const
+bool Note::operator==( const Note& other ) const
 {
-	return mNumber==otherNote.mNumber;
+	return mNumber==other.mNumber;
 }
 
-bool Note::operator!=( const Note& otherNote ) const
+bool Note::operator!=( const Note& other ) const
 {
-	return !operator==(otherNote);
+	return !operator==(other);
 }
 	
 int	Note::getOctaveNumber( int noteNumber )
