@@ -40,7 +40,7 @@ int main( int argc, char** argv )
 
 	// Create the note provider and its updater
 	NoteProvider* noteProvider = mainWidget;
-	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 100, mainWidget );
+	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 5, mainWidget );
 
 	// Create the exercise
 	QExercise* exercise = new QExercise( &staffPresenter, noteProvider, mainWidget );
