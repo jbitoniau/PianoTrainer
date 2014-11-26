@@ -5,6 +5,7 @@
 
 
 NoteProviderMidi::NoteProviderMidi()
+	: mMidiIn(NULL)
 {
 	// Create an api map.
 	std::map<int, std::string> apiMap;
@@ -21,55 +22,78 @@ NoteProviderMidi::NoteProviderMidi()
 	for ( unsigned int i=0; i<apis.size(); i++ )
 		std::cout << "  " << apiMap[ apis[i] ] << std::endl;
 
-	RtMidiIn  *midiin = 0;
-	//RtMidiOut *midiout = 0;
-
 	try 
 	{
 		// RtMidiIn constructor ... exception possible
-		midiin = new RtMidiIn();
-
-		std::cout << "\nCurrent input API: " << apiMap[ midiin->getCurrentApi() ] << std::endl;
+		mMidiIn = new RtMidiIn();
+		std::cout << "\nCurrent input API: " << apiMap[ mMidiIn->getCurrentApi() ] << std::endl;
 
 		// Check inputs.
-		unsigned int nPorts = midiin->getPortCount();
+		unsigned int nPorts = mMidiIn->getPortCount();
 		std::cout << "\nThere are " << nPorts << " MIDI input sources available.\n";
 		for ( unsigned i=0; i<nPorts; i++ ) 
 		{
-			std::string portName = midiin->getPortName(i);
+			std::string portName = mMidiIn->getPortName(i);
 			std::cout << "  Input Port #" << i+1 << ": " << portName << '\n';
 		}
 
-		// RtMidiOut constructor ... exception possible
-	/*	midiout = new RtMidiOut();
-
-		std::cout << "\nCurrent output API: " << apiMap[ midiout->getCurrentApi() ] << std::endl;
-
-		// Check outputs.
-		nPorts = midiout->getPortCount();
-		std::cout << "\nThere are " << nPorts << " MIDI output ports available.\n";
-
-		for ( unsigned i=0; i<nPorts; i++ ) 
+		if ( nPorts>0 ) 
 		{
-			std::string portName = midiout->getPortName(i);
-			std::cout << "  Output Port #" << i+1 << ": " << portName << std::endl;
+			mMidiIn->openPort( 0 );
+			
+			// Don't ignore sysex, timing, or active sensing messages.
+			mMidiIn->ignoreTypes( false, false, false );
 		}
-		std::cout << std::endl;*/
-
 	} 
 	catch ( RtMidiError &error ) 
 	{
 		error.printMessage();
 	}
-
-	delete midiin;
-	//delete midiout;
 }
 
 NoteProviderMidi::~NoteProviderMidi()
 {
+	delete mMidiIn;
+	mMidiIn = NULL;
 }
 
 void NoteProviderMidi::update()
 {
+	if ( !mMidiIn->isPortOpen() )
+		return;
+	
+	bool cont = true;
+	do
+	{
+		std::vector<unsigned char> message;
+		double stamp = mMidiIn->getMessage( &message );
+		int nBytes = message.size();
+		if ( nBytes!=0 )
+		{
+			int firstByte = message[0];
+			if ( firstByte!=0xFE )		// Decimal 254
+			{
+				unsigned char channelIndex = firstByte & 0x0F;
+				unsigned char statusCode = firstByte & 0xF0;
+				//std::cout << static_cast<int>(channelIndex) << " - " << static_cast<int>(statusCode) << std::endl;
+				if ( statusCode==0x90 && nBytes>=2 )			// Decimal 144
+				{
+					//  Note On
+					unsigned char secondByte = message[1];
+					Note note( secondByte );
+					notifyListeners(note);
+				}
+/*				else if ( statusCode==0x80 && nBytes>=2 )	// Decimal 128
+				{
+					//  Note Off
+				}*/
+			}
+		}
+		else
+		{
+			cont = false;
+		}
+	}
+	while ( cont );
+	//std::cout << "========== " << std::endl;	
 }
