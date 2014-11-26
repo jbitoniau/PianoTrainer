@@ -6,6 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets)
 
+include_directories( Dependencies/rtmidi-2.1.0 )
 
 set( SOURCE_FILES
 	Note.h
@@ -38,4 +39,9 @@ add_executable( ${PROJECT_NAME} ${SOURCE_FILES} )
 
 # Use the Widgets module from Qt 5.
 target_link_libraries( ${PROJECT_NAME} Qt5::Widgets)
+
+target_link_libraries( ${PROJECT_NAME} winmm )
+target_link_libraries( ${PROJECT_NAME} 
+						debug ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidid.lib 	
+						optimized ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidi.lib )
 

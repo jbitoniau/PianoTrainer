@@ -9,6 +9,7 @@
 #include "Note.h"
 #include "StaffPresenter.h"
 #include "NoteProviderKeyboard.h"
+#include "NoteProviderMidi.h"
 #include "QNoteProviderUpdater.h"
 #include "QExercise.h"
 
@@ -41,6 +42,9 @@ int main( int argc, char** argv )
 	// Create the note provider and its updater
 	NoteProvider* noteProvider = mainWidget;
 	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 5, mainWidget );
+
+	NoteProvider* noteProvider2 = new NoteProviderMidi();
+	QNoteProviderUpdater* providerUpdater2 = new QNoteProviderUpdater( noteProvider2, 5, mainWidget );
 
 	// Create the exercise
 	QExercise* exercise = new QExercise( &staffPresenter, noteProvider, mainWidget );

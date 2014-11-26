@@ -5,7 +5,8 @@
 class NoteProviderMidi : public NoteProvider
 {
 public:
+	NoteProviderMidi();
 	virtual ~NoteProviderMidi();	
 
-	virtual Note getNote();
+	virtual void update();
 };
