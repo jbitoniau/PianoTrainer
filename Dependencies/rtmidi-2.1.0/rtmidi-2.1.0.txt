@@ -1,0 +1,2 @@
+Uncompress rtmidi-2.1.0.tar.gz in this folder.
+Amongst other things, you should get the RtMidi.h and cpp file just here.
