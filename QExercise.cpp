@@ -109,7 +109,8 @@ void QExercise::startWaitForAnswer()
 	}
 	else if ( mPresenter->getStaff()->getStaffClef()==StaffClef::BassClef )
 	{
-		minNoteNumber = 41;
+		//minNoteNumber = 41;
+		minNoteNumber = 48;
 		maxNoteNumber = 60;
 	}
 	int noteNumber = -1;
