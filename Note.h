@@ -52,7 +52,7 @@ public:
 	
 private:
 	int					mNumber;
-	static char*		mNoteNames_SharpMode[mNumSemitones];		
-	static char*		mNoteNames_FlatMode[mNumSemitones];	
+	static const char*		mNoteNames_SharpMode[mNumSemitones];		
+	static const char*		mNoteNames_FlatMode[mNumSemitones];	
 	static bool			mIsSharpOrFlatNote[mNumSemitones];
 };

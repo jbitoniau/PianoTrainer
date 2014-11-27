@@ -29,7 +29,7 @@ set( SOURCE_FILES
 	QNoteProviderUpdater.cpp
 	QExercise.h
 	QExercise.cpp
-	main.cpp)
+	Main.cpp)
 
 source_group("" FILES ${SOURCE_FILES} )
 
@@ -40,8 +40,14 @@ add_executable( ${PROJECT_NAME} ${SOURCE_FILES} )
 # Use the Widgets module from Qt 5.
 target_link_libraries( ${PROJECT_NAME} Qt5::Widgets)
 
-target_link_libraries( ${PROJECT_NAME} winmm )
-target_link_libraries( ${PROJECT_NAME} 
-						debug ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidid.lib 	
-						optimized ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidi.lib )
 
+if( WIN32 )
+	target_link_libraries( ${PROJECT_NAME} winmm )
+	target_link_libraries( ${PROJECT_NAME} 
+							debug ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidid.lib 	
+							optimized ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/lib/rtmidi.lib )
+else()
+	#target_link_libraries( ${PROJECT_NAME} asound )
+	#target_link_libraries( ${PROJECT_NAME} pthread )
+	target_link_libraries( ${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/rtmidi-2.1.0/librtmidi.so )
+endif()
