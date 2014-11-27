@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "StaffPresenter.h"
 #include "NoteProvider.h"
+#include "INoteGenerator.h"
 
 class QExercise :	public QObject,
 					public NoteProvider::Listener
@@ -32,27 +33,28 @@ private:
 		CheckAnswer
 	};
 
-	void			nextState();
-	void			startCountDown();
-	void			updateCountDown();
-	void			startWaitForAnswer();
-	void			startCheckAnswer();
+	void					nextState();
+	void					startCountDown();
+	void					updateCountDown();
+	void					startWaitForAnswer();
+	void					startCheckAnswer();
 
-	StaffPresenter*	mPresenter;
-	NoteProvider*   mNoteProvider;
-	QTimer*			mTimer;
-	QTime			mTime;
+	StaffPresenter*			mPresenter;
+	NoteProvider*			mNoteProvider;
+	QTimer*					mTimer;
+	QTime					mTime;
 
-	State			mState;
-	int				mCounter;
-	int				mNoteCount;
+	State					mState;
+	int						mCounter;
+	int						mNoteCount;
 
-	Note			mNoteToFind;
-	Note			mNoteAnswered;
-	int				mAnswerTimeInMs;		
+	Note					mNoteToFind;
+	Note					mNoteAnswered;
+	int						mAnswerTimeInMs;		
 
-	bool			mIgnoreOctaveNumberInAnswer;
-	bool			mChooseOnlyPlainNotes;
-	std::fstream 	mLog;
+	bool					mIgnoreOctaveNumberInAnswer;
+	
+	std::fstream 			mLog;
+	std::auto_ptr<INoteGenerator>			mNoteGenerator;
 };
 

@@ -8,6 +8,11 @@ find_package(Qt5Widgets)
 
 
 set( SOURCE_FILES
+	INoteGenerator.h
+	BasicNoteGenerator.h
+	BasicNoteGenerator.cpp
+	LeitnerNoteGenerator.h
+	LeitnerNoteGenerator.cpp
 	Note.h
 	Note.cpp
 	Clef.h

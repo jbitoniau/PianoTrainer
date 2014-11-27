@@ -17,6 +17,7 @@ public:
 
 	Note();
 	Note( int number );
+	Note( int octave, int getIndexInOctave);
 
 	bool operator==( const Note& other ) const;
 	bool operator!=( const Note& other ) const;
