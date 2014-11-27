@@ -57,6 +57,12 @@ NoteProviderMidi::~NoteProviderMidi()
 	mMidiIn = NULL;
 }
 
+
+bool NoteProviderMidi::IsAvailable()
+{
+	return mMidiIn->getPortCount() > 0;
+}
+
 void NoteProviderMidi::update()
 {
 	if ( !mMidiIn->isPortOpen() )
