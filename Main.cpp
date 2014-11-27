@@ -9,6 +9,7 @@
 #include "Note.h"
 #include "StaffPresenter.h"
 #include "NoteProviderKeyboard.h"
+#include "NoteProviderMidi.h"
 #include "QNoteProviderUpdater.h"
 #include "QExercise.h"
 
@@ -42,8 +43,11 @@ int main( int argc, char** argv )
 	NoteProvider* noteProvider = mainWidget;
 	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 5, mainWidget );
 
+	NoteProvider* noteProvider2 = new NoteProviderMidi();
+	QNoteProviderUpdater* providerUpdater2 = new QNoteProviderUpdater( noteProvider2, 10, mainWidget );
+
 	// Create the exercise
-	QExercise* exercise = new QExercise( &staffPresenter, noteProvider, mainWidget );
+	QExercise* exercise = new QExercise( &staffPresenter, noteProvider2, mainWidget );
 	bool r = startButton->connect( startButton, SIGNAL( pressed() ), exercise, SLOT( start() ) );
 	assert(r);
 	r = stopButton->connect( stopButton, SIGNAL( pressed() ), exercise, SLOT( stop() ) );

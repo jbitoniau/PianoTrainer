@@ -2,15 +2,16 @@
 
 #include <sstream>
 #include <cmath>
+//#include <exception>
 
 const Note&	Note::EmptyNote(-1);
 
 
-char* Note::mNoteNames_SharpMode[mNumSemitones] = 
+const char* Note::mNoteNames_SharpMode[mNumSemitones] = 
 //	 { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 	 { "Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si" };	
 	//  0     1      2      3     4      5     6      7      8       9      10    11
-char* Note::mNoteNames_FlatMode[mNumSemitones] = 
+const char* Note::mNoteNames_FlatMode[mNumSemitones] = 
      { "Do", "Re-b", "Re", "Mi-b", "Mi", "Fa", "Sol-b", "Sol", "La-b", "La", "Si-b", "Si" };		// Flat character should be \u266D
 
 bool  Note::mIsSharpOrFlatNote[mNumSemitones] = 
@@ -46,7 +47,8 @@ bool Note::operator!=( const Note& other ) const
 int	Note::getOctaveNumber( int noteNumber )
 {
 	if ( noteNumber<0 )
-		throw new std::exception("Can't get octave from Empty Note");
+		return -1;
+		//throw new std::exception( std::string("Can't get octave from Empty Note") );
 	int octaveNumber = (noteNumber / mNumSemitones) - 1;
 	return octaveNumber;
 }
@@ -54,7 +56,8 @@ int	Note::getOctaveNumber( int noteNumber )
 int Note::getIndexInOctave( int noteNumber )
 {
 	if ( noteNumber<0 )
-		throw new std::exception("Empty Note has no index in octave");
+		//throw new std::exception( std::string("Empty Note has no index in octave") );
+		return -1;
 	int indexInOctave = noteNumber % mNumSemitones;
 	return indexInOctave;
 }

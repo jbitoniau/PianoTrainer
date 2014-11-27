@@ -91,8 +91,8 @@ void QExercise::updateCountDown()
 	mCounter++;
 	if ( mCounter<=3 )
 	{	
-		//QString text = QString("%1").arg( mCounter );
-		//mPresenter->setText( text );
+	//	QString text = QString("%1").arg( mCounter );
+	//	mPresenter->setText( text );
 	}
 	else
 	{
@@ -128,7 +128,7 @@ void QExercise::startCheckAnswer()
 
 	std::string evalMessage = "";
 
-	if (mIgnoreOctaveNumberInAnswer)
+	if ( mIgnoreOctaveNumberInAnswer )
 	{
 		mNoteAnswered = Note(mNoteToFind.getOctaveNumber(), mNoteAnswered.getIndexInOctave() );
 	}

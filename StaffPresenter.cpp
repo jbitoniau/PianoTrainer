@@ -2,6 +2,7 @@
 
 #include <QImage>
 #include <QGraphicsPixmapItem>
+#include <cmath>
 
 const float StaffPresenter::mStaffLineSpacing = 40;
 const float StaffPresenter::mStaffWidth = 400;
@@ -52,7 +53,7 @@ void StaffPresenter::createStaffKeyItem()
 		case 5 : resourceName="FClef.png";
 			break;
 		default:
-			throw new std::exception("Unsupported staff key");
+			return;		//throw new std::exception("Unsupported staff key");
 	}
 	
 	QImage image(resourceName);
@@ -151,7 +152,7 @@ void StaffPresenter::update()
 	const float mLedgerLineHalfWidth = mLedgerLineWidth / 2.f;
 	if ( staffY<0 )
 	{
-		int numLedgerLinesBelow = static_cast<int>( std::abs( static_cast<float>(staffY)/-2.f ) ) ;
+		int numLedgerLinesBelow = static_cast<int>( fabs( static_cast<double>(staffY)/-2.0 ) ) ;
 		for ( int i=0; i<numLedgerLinesBelow; ++i )
 		{
 			float y = ( static_cast<float>(i) + 1 ) * mStaffLineSpacing;
