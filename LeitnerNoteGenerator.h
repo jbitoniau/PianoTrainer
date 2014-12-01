@@ -15,12 +15,12 @@ class LeitnerNoteGenerator : public BasicNoteGenerator
 public:
 	LeitnerNoteGenerator();
 
-	Note		DrawNewtNote();
-	bool		EvalAnswer(Note answer, int timeInMs, std::string& evalMessage);
+	Note		drawNewNote();
+	bool		evaluateAnswer(Note answer, int timeInMs, std::string& evalMessage);
 
 private:
-	void		GenerateBucket();
-	void		PrintBucketState();
+	void		generateBucket();
+	void		printBucketState();
 
 	int			mSessionSize;
 	int			mSessionCurrentNumber;

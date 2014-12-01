@@ -19,16 +19,16 @@ BasicNoteGenerator::BasicNoteGenerator()
 
 BasicNoteGenerator::BasicNoteGenerator(int minNote, int maxNote)
 {
-	SetRange(minNote, maxNote);
+	setRange(minNote, maxNote);
 }
 
-void BasicNoteGenerator::SetRange(Note minNote, Note maxNote)
+void BasicNoteGenerator::setRange(Note minNote, Note maxNote)
 {
 	mMinNote = minNote;
 	mMaxNote = maxNote;
 }
 
-Note BasicNoteGenerator::DrawNewtNote()
+Note BasicNoteGenerator::drawNewNote()
 {
 	assert( mNoteHasBeenAnswered );
 	mNoteHasBeenAnswered = false;
@@ -48,7 +48,7 @@ Note BasicNoteGenerator::DrawNewtNote()
 }
 
 
-bool BasicNoteGenerator::EvalAnswer(Note noteAnswered, int timeInMs, std::string& evalMessage)
+bool BasicNoteGenerator::evaluateAnswer(Note noteAnswered, int timeInMs, std::string& evalMessage)
 {
 	mNoteHasBeenAnswered = true;
 

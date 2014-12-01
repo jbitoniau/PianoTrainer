@@ -6,17 +6,18 @@
 /*
 	INoteGenerator
 
-	Interface for generating Notes. THere are three methods  to implement:
-	SetRange: where you can specify the range of note you would like to study
-	DrawNewtNote: where you generator decide which Note to 
-	EvalAnswer, which evalutes your answer so it could influence or not the next draw.
+	Interface for generating Notes. There are three methods to implement:
+	setRange: where you can specify the range of the notes you would like to study
+	drawNewNote: where your generator returns a note 
+	evalAnswer: this makes your generator aware the user's answer so you can take it
+	into account for the next notes to draw.
 */
 class INoteGenerator
 {
 public:
 	virtual ~INoteGenerator() {}
 
-	virtual void SetRange(Note minNote, Note maxNote) = 0;
-	virtual Note DrawNewtNote() = 0;
-	virtual bool EvalAnswer(Note answer, int timeInMs, std::string& evalMessage) = 0;
+	virtual void setRange(Note minNote, Note maxNote) = 0;
+	virtual Note drawNewNote() = 0;
+	virtual bool evaluateAnswer(Note answer, int timeInMs, std::string& evalMessage) = 0;
 };

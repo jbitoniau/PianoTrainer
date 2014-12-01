@@ -16,7 +16,7 @@ LeitnerNoteGenerator::LeitnerNoteGenerator()
 }
 
 
-void LeitnerNoteGenerator::GenerateBucket()
+void LeitnerNoteGenerator::generateBucket()
 {
 	if (mSessionCurrentNumber != 0 && mSessionCurrentNumber % 2 == 0)
 	{
@@ -48,10 +48,10 @@ void LeitnerNoteGenerator::GenerateBucket()
 
 	mSessionCurrentNumber += 1;
 	mNoteHasBeenAnswered = true;
-	PrintBucketState();
+	printBucketState();
 }
 
-Note LeitnerNoteGenerator::DrawNewtNote()
+Note LeitnerNoteGenerator::drawNewNote()
 {
 	assert(mNoteHasBeenAnswered);
 	mNoteHasBeenAnswered = false;
@@ -76,13 +76,13 @@ Note LeitnerNoteGenerator::DrawNewtNote()
 	}
 	else
 	{
-		GenerateBucket();
-		return DrawNewtNote();
+		generateBucket();
+		return drawNewNote();
 	}
 }
 
 
-bool LeitnerNoteGenerator::EvalAnswer(Note noteAnswered, int timeInMs, std::string& evaltMessage)
+bool LeitnerNoteGenerator::evaluateAnswer(Note noteAnswered, int timeInMs, std::string& evaltMessage)
 {
 	mNoteHasBeenAnswered = true;
 
@@ -107,13 +107,13 @@ bool LeitnerNoteGenerator::EvalAnswer(Note noteAnswered, int timeInMs, std::stri
 
 		mWorkingBucket.push_back(mNoteToFind);
 	}
-	PrintBucketState();
+	printBucketState();
 
 
 	return bNoteCorrect;
 }
 
-void LeitnerNoteGenerator::PrintBucketState()
+void LeitnerNoteGenerator::printBucketState()
 {
 	std::cout << "Working: ";
 	for (std::deque<Note>::iterator itr = mWorkingBucket.begin(); itr != mWorkingBucket.end(); itr++)

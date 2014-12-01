@@ -28,11 +28,10 @@ Note::Note( int number )
 {
 }
 
-Note::Note(int octave, int getIndexInOctave)
+Note::Note(int octave, int indexInOctave)
 {
-	mNumber = (octave + 1)* mNumSemitones + getIndexInOctave;
+	mNumber = (octave + 1) * mNumSemitones + indexInOctave;
 }
-
 
 bool Note::operator==( const Note& other ) const
 {
@@ -86,7 +85,6 @@ bool Note::isSharpOrFlat( int noteNumber )
 	int indexInOctave = getIndexInOctave(noteNumber);
 	return mIsSharpOrFlatNote[indexInOctave];
 }
-
 
 // See http://en.wikipedia.org/wiki/MIDI_Tuning_Standard
 double Note::getFrequency( int noteNumber )

@@ -13,9 +13,9 @@ public:
 	BasicNoteGenerator();
 	BasicNoteGenerator(int minNote, int maxNote);
 
-	virtual void	SetRange(Note minNote, Note maxNote);
-	virtual Note	DrawNewtNote();
-	virtual bool	EvalAnswer(Note answer, int timeInMs, std::string& evalMessage);
+	virtual void	setRange(Note minNote, Note maxNote);
+	virtual Note	drawNewNote();
+	virtual bool	evaluateAnswer(Note answer, int timeInMs, std::string& evalMessage);
 
 protected:
 	Note			mMinNote;

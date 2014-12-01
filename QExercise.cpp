@@ -36,11 +36,11 @@ void QExercise::start()
 	mNoteGenerator.reset( new LeitnerNoteGenerator() );
 	if (mPresenter->getStaff()->getStaffClef() == StaffClef::TrebbleClef)
 	{
-		mNoteGenerator->SetRange(60, 7 );
+		mNoteGenerator->setRange(60, 7 );
 	}
 	else if (mPresenter->getStaff()->getStaffClef() == StaffClef::BassClef)
 	{
-		mNoteGenerator->SetRange(41, 60);
+		mNoteGenerator->setRange(41, 60);
 	}
 
 
@@ -113,7 +113,7 @@ void QExercise::startWaitForAnswer()
 
 	
 
-	mNoteToFind = mNoteGenerator->DrawNewtNote();
+	mNoteToFind = mNoteGenerator->drawNewNote();
 	mPresenter->getStaff()->setNote( mNoteToFind );
 	mTime.start();
 }
@@ -133,7 +133,7 @@ void QExercise::startCheckAnswer()
 		mNoteAnswered = Note(mNoteToFind.getOctaveNumber(), mNoteAnswered.getIndexInOctave() );
 	}
 
-	bool success = mNoteGenerator->EvalAnswer(mNoteAnswered, mAnswerTimeInMs, evalMessage);
+	bool success = mNoteGenerator->evaluateAnswer(mNoteAnswered, mAnswerTimeInMs, evalMessage);
 	mPresenter->setText( evalMessage.c_str() );
 
 	mNoteCount++;
