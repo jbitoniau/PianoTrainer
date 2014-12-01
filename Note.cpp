@@ -28,6 +28,12 @@ Note::Note( int number )
 {
 }
 
+Note::Note(int octave, int getIndexInOctave)
+{
+	mNumber = (octave + 1)* mNumSemitones + getIndexInOctave;
+}
+
+
 bool Note::operator==( const Note& other ) const
 {
 	return mNumber==other.mNumber;

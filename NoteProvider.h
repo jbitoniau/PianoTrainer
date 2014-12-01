@@ -6,7 +6,9 @@
 class NoteProvider
 {
 public:
+	virtual ~NoteProvider() {}
 	virtual void update() = 0;
+
 	
 	class Listener
 	{

@@ -12,6 +12,8 @@ public:
 
 	virtual void update();
 
+	bool IsAvailable();
+
 private:
 	RtMidiIn* mMidiIn;
 };

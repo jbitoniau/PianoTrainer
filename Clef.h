@@ -15,12 +15,15 @@
 class Clef
 {
 public:
-	Clef( const std::string& name, int indexInOctave );		// The index is just another way of naming the key. It doesn't carry any meaningful information
+	Clef( const std::string& name, int indexInOctave );		
 
 	bool operator==( const Clef& other ) const;
 	bool operator!=( const Clef& other ) const;
 
 	const std::string&	getName() const				{ return mName; }
+
+	// The index is just another way of naming the key. It doesn't carry any meaningful information
+	// The index represent the position clef within the 12 half-tones octave (0-11)
 	const int			getIndexInOctave() const	{ return mIndexInOctave; };
 
 	static const Clef	GClef;

@@ -9,6 +9,11 @@ find_package(Qt5Widgets)
 include_directories( Dependencies/rtmidi-2.1.0 )
 
 set( SOURCE_FILES
+	INoteGenerator.h
+	BasicNoteGenerator.h
+	BasicNoteGenerator.cpp
+	LeitnerNoteGenerator.h
+	LeitnerNoteGenerator.cpp
 	Note.h
 	Note.cpp
 	Clef.h

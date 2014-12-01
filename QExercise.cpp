@@ -1,4 +1,5 @@
 #include "QExercise.h"
+#include "LeitnerNoteGenerator.h"
 
 #include <assert.h>
 #include <cstdlib>
@@ -17,8 +18,7 @@ QExercise::QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QOb
 		mNoteToFind(),
 		mNoteAnswered(),
 		mAnswerTimeInMs(0),
-		mIgnoreOctaveNumberInAnswer(true),
-		mChooseOnlyPlainNotes(true)
+		mIgnoreOctaveNumberInAnswer(true)
 {
 	mNoteProvider->addListener(this);
 
@@ -32,6 +32,17 @@ void QExercise::start()
 {
 	if ( mState!=Stopped )
 		return;
+
+	mNoteGenerator.reset( new LeitnerNoteGenerator() );
+	if (mPresenter->getStaff()->getStaffClef() == StaffClef::TrebbleClef)
+	{
+		mNoteGenerator->SetRange(60, 7 );
+	}
+	else if (mPresenter->getStaff()->getStaffClef() == StaffClef::BassClef)
+	{
+		mNoteGenerator->SetRange(41, 60);
+	}
+
 
 	mNoteCount = 0;
 	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);
@@ -100,30 +111,9 @@ void QExercise::startWaitForAnswer()
 
 	mPresenter->setNoteNameVisible(false);
 
-	int minNoteNumber = 60;
-	int maxNoteNumber = 60;	
-	if ( mPresenter->getStaff()->getStaffClef()==StaffClef::TrebbleClef )
-	{
-		minNoteNumber = 60;
-		maxNoteNumber = 79;
-	}
-	else if ( mPresenter->getStaff()->getStaffClef()==StaffClef::BassClef )
-	{
-		//minNoteNumber = 41;
-		minNoteNumber = 48;
-		maxNoteNumber = 60;
-	}
-	int noteNumber = -1;
-	int range = maxNoteNumber - minNoteNumber + 1;		// +1 to include max note number
-	srand(time(NULL));
-	while ( noteNumber==-1 )
-	{
-		noteNumber = (rand() % range) + minNoteNumber;
-		if ( mChooseOnlyPlainNotes )
-			if ( Note::isSharpOrFlat(noteNumber) )
-				noteNumber=-1;
-	}
-	mNoteToFind = Note( noteNumber );
+	
+
+	mNoteToFind = mNoteGenerator->DrawNewtNote();
 	mPresenter->getStaff()->setNote( mNoteToFind );
 	mTime.start();
 }
@@ -136,22 +126,15 @@ void QExercise::startCheckAnswer()
 
 	mPresenter->setNoteNameVisible(true);
 
-	bool success = false;
+	std::string evalMessage = "";
+
 	if ( mIgnoreOctaveNumberInAnswer )
 	{
-		if ( mNoteToFind.getIndexInOctave()==mNoteAnswered.getIndexInOctave() )
-			success=true;
-	}
-	else
-	{
-		if ( mNoteAnswered==mNoteToFind )
-			success = true;
+		mNoteAnswered = Note(mNoteToFind.getOctaveNumber(), mNoteAnswered.getIndexInOctave() );
 	}
 
-	if ( success )
-		mPresenter->setText("OK!");
-	else
-		mPresenter->setText("WRONG!");
+	bool success = mNoteGenerator->EvalAnswer(mNoteAnswered, mAnswerTimeInMs, evalMessage);
+	mPresenter->setText( evalMessage.c_str() );
 
 	mNoteCount++;
 

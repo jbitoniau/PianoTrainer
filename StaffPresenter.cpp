@@ -114,7 +114,7 @@ void StaffPresenter::update()
 	
 	mNoteNameItem->setPlainText( noteName.c_str() );
 
-	for ( int i=0; i<mLedgerLines.size(); ++i )
+	for ( size_t i=0; i<mLedgerLines.size(); ++i )
 		mGraphicsScene->removeItem( mLedgerLines[i] );
 	mLedgerLines.clear();
 

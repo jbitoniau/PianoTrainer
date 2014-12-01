@@ -39,15 +39,21 @@ int main( int argc, char** argv )
 	// Create the model presenter	
 	StaffPresenter staffPresenter( &staff, scene );
 
-	// Create the note provider and its updater
-	NoteProvider* noteProvider = mainWidget;
-	QNoteProviderUpdater* providerUpdater = new QNoteProviderUpdater( noteProvider, 5, mainWidget );
+	// Create the note providers and its updater
+	NoteProvider* noteProviderKeyboard = mainWidget;
+	NoteProviderMidi* noteProviderMidi = new NoteProviderMidi();
+	QNoteProviderUpdater* providerUpdaterKeyboard = new QNoteProviderUpdater(noteProviderKeyboard, 10, mainWidget);
+	QNoteProviderUpdater* providerUpdaterMIDI = new QNoteProviderUpdater(noteProviderMidi, 5, mainWidget);
+	NoteProvider* noteProvider = NULL;
 
-	NoteProvider* noteProvider2 = new NoteProviderMidi();
-	QNoteProviderUpdater* providerUpdater2 = new QNoteProviderUpdater( noteProvider2, 10, mainWidget );
+	if (noteProviderMidi->IsAvailable())
+		noteProvider = noteProviderMidi;
+	else
+		noteProvider = noteProviderKeyboard;
 
 	// Create the exercise
-	QExercise* exercise = new QExercise( &staffPresenter, noteProvider2, mainWidget );
+	QExercise* exercise = new QExercise(&staffPresenter, noteProvider, mainWidget);
+
 	bool r = startButton->connect( startButton, SIGNAL( pressed() ), exercise, SLOT( start() ) );
 	assert(r);
 	r = stopButton->connect( stopButton, SIGNAL( pressed() ), exercise, SLOT( stop() ) );
