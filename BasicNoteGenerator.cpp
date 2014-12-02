@@ -33,7 +33,6 @@ Note BasicNoteGenerator::drawNewNote()
 	assert( mNoteHasBeenAnswered );
 	mNoteHasBeenAnswered = false;
 
-
 	int range = mMaxNote.getNumber() - mMinNote.getNumber() + 1;		// +1 to include max note number
 	int resultNoteNumber = -1;
 
@@ -44,7 +43,8 @@ Note BasicNoteGenerator::drawNewNote()
 			if (Note::isSharpOrFlat(resultNoteNumber))
 				resultNoteNumber = -1;
 	}
-	return Note(resultNoteNumber);
+	mNoteToFind = Note(resultNoteNumber);
+	return mNoteToFind;
 }
 
 
@@ -54,12 +54,12 @@ bool BasicNoteGenerator::evaluateAnswer(Note noteAnswered, int timeInMs, std::st
 
 	if (mNoteToFind == noteAnswered)
 	{
-		evalMessage = "TRUE !!";
+		evalMessage = "OK!";
 		return false;
 	}
 	else
 	{
-		evalMessage = "WRONG !!";
+		evalMessage = "WRONG!";
 		return false;
 	}
 }
