@@ -36,7 +36,7 @@ void QExercise::start()
 
 	//mNoteGenerator.reset( new LeitnerNoteGenerator() );
 	mNoteGenerator.reset( new BasicNoteGenerator() );
-	mNoteGenerator->setRange(60, 70);	// 41,??						// !!!!!!!!!!!!!!!!!
+	mNoteGenerator->setRange(41, 80);		// !!!!!!!!!!!!!!!!!
 
 	mNoteCount = 0;
 	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);

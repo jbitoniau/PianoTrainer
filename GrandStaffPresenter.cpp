@@ -1,13 +1,22 @@
 #include "GrandStaffPresenter.h"
 
+#include <QGraphicsItemGroup>
+
 GrandStaffPresenter::GrandStaffPresenter( GrandStaff* grandStaff, QGraphicsScene* graphicsScene )
 	: GrandStaff::Listener(),
 	  mGrandStaff(grandStaff),
+	  mGraphicsScene(graphicsScene),
 	  mTrebleStaffPresenter(0),
 	  mBassStaffPresenter(0)
 {
-	mTrebleStaffPresenter = new StaffPresenter( &grandStaff->getTrebleStaff(), graphicsScene );
-	mBassStaffPresenter = new StaffPresenter( &grandStaff->getBassStaff(), graphicsScene );
+	QGraphicsItemGroup* trebleGroup = new QGraphicsItemGroup();
+	mGraphicsScene->addItem( trebleGroup );
+	mTrebleStaffPresenter = new StaffPresenter( &grandStaff->getTrebleStaff(), trebleGroup );
+
+	QGraphicsItemGroup* bassGroup = new QGraphicsItemGroup();
+	bassGroup->setPos(0, 300 );
+	mGraphicsScene->addItem( bassGroup );
+	mBassStaffPresenter = new StaffPresenter( &grandStaff->getBassStaff(), bassGroup );
 }
 
 /*#include <QImage>

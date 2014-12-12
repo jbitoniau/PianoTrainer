@@ -4,11 +4,12 @@
 #include "Staff.h"
 
 class QGraphicsPixmapItem;
+class QGraphicsItemGroup;
 
 class StaffPresenter : public Staff::Listener
 {
 public:
-	StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene );
+	StaffPresenter( Staff* staff, QGraphicsItemGroup* group );
 
 	Staff*			getStaff() const { return mStaff; }
 	QGraphicsScene*	getGraphicsScene() const { return mGraphicsScene; }
@@ -31,6 +32,8 @@ private:
 	qreal			getSceneYFromStaffY( int y ) const;
 
 	Staff*					mStaff;
+
+	QGraphicsItemGroup*		mGroup;
 	QGraphicsScene*			mGraphicsScene;
 	QGraphicsPixmapItem*	mNoteItem;
 	std::vector<QGraphicsLineItem*> mLedgerLines;

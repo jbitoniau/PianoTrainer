@@ -34,11 +34,9 @@ private:
 	// Return the vertical position in the scene (i.e. QGraphicsItem's coordinate system)
 	qreal			getSceneYFromStaffY( int y ) const;
 
-	
-	QGraphicsScene*			mGraphicsScene;
 	*/
 	GrandStaff*				mGrandStaff;
-
+	QGraphicsScene*			mGraphicsScene;
 	StaffPresenter*			mTrebleStaffPresenter;
 	StaffPresenter*			mBassStaffPresenter;
 

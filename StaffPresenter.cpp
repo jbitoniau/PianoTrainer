@@ -1,6 +1,7 @@
 #include "StaffPresenter.h"
 
 #include <QImage>
+#include <QGraphicsItemGroup>
 #include <QGraphicsPixmapItem>
 #include <cmath>
 
@@ -10,10 +11,10 @@ const float StaffPresenter::mNoteXPos = 200;
 const float StaffPresenter::mLedgerLineWidth = 70;	
 const QPen StaffPresenter::mLinePen( Qt::black,  2 );
 
-StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
+StaffPresenter::StaffPresenter( Staff* staff, QGraphicsItemGroup* group )
 	: Staff::Listener(),
 	  mStaff(staff),
-	  mGraphicsScene(graphicsScene),
+	  mGroup(group),
 	  mNoteItem(NULL),
 	  mLedgerLines(),
 	  mNoteNameItem(NULL),
@@ -38,7 +39,8 @@ void StaffPresenter::createStaffLineItems()
 	for ( int i=0; i<5; ++i )
 	{
 		qreal y = getSceneYFromStaffY(i*2);
-		mGraphicsScene->addLine( 0, y, mStaffWidth, y, mLinePen );
+		QGraphicsLineItem* line = new QGraphicsLineItem( 0, y, mStaffWidth, y, mGroup );
+		line->setPen( mLinePen );
 	}
 }
 
@@ -62,7 +64,7 @@ void StaffPresenter::createStaffKeyItem()
 	int imageHeight = image.height();
 
 	QPixmap pixmap = QPixmap::fromImage(image);
-	QGraphicsPixmapItem* pixmapItem = mGraphicsScene->addPixmap( pixmap );
+	QGraphicsPixmapItem* pixmapItem = new QGraphicsPixmapItem( pixmap, mGroup );
 	
 	qreal desiredHeight = 200.0;
 	qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
@@ -80,14 +82,14 @@ void StaffPresenter::createNoteItem()
 	qreal desiredHeight = 40.0;
 	qreal scaleFactor =  desiredHeight / static_cast<qreal>(imageHeight);
 
-	mNoteItem = mGraphicsScene->addPixmap( mNotePixmap );
+	mNoteItem = new QGraphicsPixmapItem( mNotePixmap, mGroup );
 	mNoteItem->setScale( scaleFactor );
 	mNoteItem->setVisible(false);
 }
 
 void StaffPresenter::createNoteNameItem()
 {
-	mNoteNameItem = mGraphicsScene->addText( "..." );
+	mNoteNameItem = new QGraphicsTextItem( "...", mGroup );
 	mNoteNameItem->setPos( mStaffWidth, -5 * mStaffLineSpacing / 2 );
 	mNoteNameItem->setScale( 4 );
 }
@@ -103,7 +105,7 @@ void StaffPresenter::init()
 	createNoteItem();
 	createNoteNameItem();
 
-	mTextItem = mGraphicsScene->addText( "" );
+	mTextItem = new QGraphicsTextItem( "", mGroup );
 	mTextItem->setPos( mStaffWidth, -8 * mStaffLineSpacing / 2 );
 	mTextItem->setScale( 4 );
 }
@@ -157,7 +159,8 @@ void StaffPresenter::update()
 		for ( int i=0; i<numLedgerLinesBelow; ++i )
 		{
 			float y = ( static_cast<float>(i) + 1 ) * mStaffLineSpacing;
-			QGraphicsLineItem* line = mGraphicsScene->addLine( mNoteXPos-mLedgerLineHalfWidth, y, mNoteXPos+mLedgerLineHalfWidth, y, mLinePen );
+			QGraphicsLineItem* line = new QGraphicsLineItem( mNoteXPos-mLedgerLineHalfWidth, y, mNoteXPos+mLedgerLineHalfWidth, y, mGroup );
+			line->setPen( mLinePen );
 			mLedgerLines.push_back( line );
 		}
 	}
@@ -167,7 +170,8 @@ void StaffPresenter::update()
 		for ( int i=0; i<numLedgerLinesAbove; ++i )
 		{
 			float y = -1.0 * (5.f + static_cast<float>(i)) * mStaffLineSpacing;
-			QGraphicsLineItem* line = mGraphicsScene->addLine( mNoteXPos-mLedgerLineHalfWidth, y, mNoteXPos+mLedgerLineHalfWidth, y, mLinePen );
+			QGraphicsLineItem* line = new QGraphicsLineItem( mNoteXPos-mLedgerLineHalfWidth, y, mNoteXPos+mLedgerLineHalfWidth, y, mGroup );
+			line->setPen( mLinePen );
 			mLedgerLines.push_back( line );
 		}
 	}
