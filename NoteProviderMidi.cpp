@@ -5,7 +5,8 @@
 
 
 NoteProviderMidi::NoteProviderMidi()
-	: mMidiIn(NULL)
+	: NoteProvider(),
+	  mMidiIn(NULL)
 {
 	// Create an api map.
 	std::map<int, std::string> apiMap;

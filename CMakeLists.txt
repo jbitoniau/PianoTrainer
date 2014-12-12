@@ -22,8 +22,12 @@ set( SOURCE_FILES
 	StaffClef.cpp
 	Staff.h
 	Staff.cpp
+	GrandStaff.h
+	GrandStaff.cpp
 	StaffPresenter.h
 	StaffPresenter.cpp
+	GrandStaffPresenter.h
+	GrandStaffPresenter.cpp
 	NoteProvider.h
 	NoteProvider.cpp
 	NoteProviderMidi.h

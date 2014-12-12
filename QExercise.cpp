@@ -8,6 +8,7 @@
 
 QExercise::QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent )
 	:	QObject(parent),
+		NoteProvider::Listener(),
 		mPresenter(presenter),
 		mNoteProvider(noteProvider),
 		mTimer(NULL),
@@ -33,7 +34,8 @@ void QExercise::start()
 	if ( mState!=Stopped )
 		return;
 
-	mNoteGenerator.reset( new LeitnerNoteGenerator() );
+	//mNoteGenerator.reset( new LeitnerNoteGenerator() );
+	mNoteGenerator.reset( new BasicNoteGenerator() );
 	if (mPresenter->getStaff()->getStaffClef() == StaffClef::TrebbleClef)
 	{
 		mNoteGenerator->setRange(60, 7 );

@@ -1,6 +1,10 @@
-#include "StaffPresenter.h"
+#include "GrandStaffPresenter.h"
 
-#include <QImage>
+GrandStaffPresenter::GrandStaffPresenter( GrandStaff* staff, QGraphicsScene* graphicsScene )
+{
+}
+
+/*#include <QImage>
 #include <QGraphicsPixmapItem>
 #include <cmath>
 
@@ -11,8 +15,7 @@ const float StaffPresenter::mLedgerLineWidth = 70;
 const QPen StaffPresenter::mLinePen( Qt::black,  2 );
 
 StaffPresenter::StaffPresenter( Staff* staff, QGraphicsScene* graphicsScene )
-	: Staff::Listener(),
-	  mStaff(staff),
+	: mStaff(staff),
 	  mGraphicsScene(graphicsScene),
 	  mNoteItem(NULL),
 	  mLedgerLines(),
@@ -188,3 +191,4 @@ void StaffPresenter::setNoteNameVisible( bool value )
 {
 	mNoteNameItem->setVisible(value); 
 }
+*/

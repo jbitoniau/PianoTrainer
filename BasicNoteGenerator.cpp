@@ -6,6 +6,7 @@
 
 
 BasicNoteGenerator::BasicNoteGenerator()
+	: INoteGenerator()
 {
 	mMinNote = 60;
 	mMaxNote = 60;

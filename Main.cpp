@@ -22,8 +22,8 @@ int main( int argc, char** argv )
 	QApplication app(argc, argv);
 	
 	// Create the model
-	Staff staff( StaffClef::TrebbleClef );
-	//Staff staff( StaffClef::BassClef );
+	//Staff staff( StaffClef::TrebbleClef );
+	Staff staff( StaffClef::BassClef );
 	
 	// Create the user interface
 	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
