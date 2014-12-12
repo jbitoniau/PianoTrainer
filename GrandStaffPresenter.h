@@ -8,6 +8,11 @@ class GrandStaffPresenter : public GrandStaff::Listener
 public:
 	GrandStaffPresenter( GrandStaff* staff, QGraphicsScene* graphicsScene );
 
+	GrandStaff*		getGrandStaff() const { return mGrandStaff; }
+
+	StaffPresenter*	getTrebleStaffPresenter() const { return mTrebleStaffPresenter; }
+	StaffPresenter*	getBassStaffPresenter() const { return mBassStaffPresenter; }
+	
 /*	Staff*			getStaff() const { return mStaff; }
 	QGraphicsScene*	getGraphicsScene() const { return mGraphicsScene; }
 
@@ -33,4 +38,8 @@ private:
 	QGraphicsScene*			mGraphicsScene;
 	*/
 	GrandStaff*				mGrandStaff;
+
+	StaffPresenter*			mTrebleStaffPresenter;
+	StaffPresenter*			mBassStaffPresenter;
+
 };

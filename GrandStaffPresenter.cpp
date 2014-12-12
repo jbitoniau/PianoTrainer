@@ -1,7 +1,13 @@
 #include "GrandStaffPresenter.h"
 
-GrandStaffPresenter::GrandStaffPresenter( GrandStaff* staff, QGraphicsScene* graphicsScene )
+GrandStaffPresenter::GrandStaffPresenter( GrandStaff* grandStaff, QGraphicsScene* graphicsScene )
+	: GrandStaff::Listener(),
+	  mGrandStaff(grandStaff),
+	  mTrebleStaffPresenter(0),
+	  mBassStaffPresenter(0)
 {
+	mTrebleStaffPresenter = new StaffPresenter( &grandStaff->getTrebleStaff(), graphicsScene );
+	mBassStaffPresenter = new StaffPresenter( &grandStaff->getBassStaff(), graphicsScene );
 }
 
 /*#include <QImage>

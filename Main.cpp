@@ -7,7 +7,7 @@
 #include <QPushButton>
 
 #include "Note.h"
-#include "StaffPresenter.h"
+#include "GrandStaffPresenter.h"
 #include "NoteProviderKeyboard.h"
 #include "NoteProviderMidi.h"
 #include "QNoteProviderUpdater.h"
@@ -22,8 +22,7 @@ int main( int argc, char** argv )
 	QApplication app(argc, argv);
 	
 	// Create the model
-	//Staff staff( StaffClef::TrebbleClef );
-	Staff staff( StaffClef::BassClef );
+	GrandStaff grandStaff;
 	
 	// Create the user interface
 	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
@@ -37,7 +36,7 @@ int main( int argc, char** argv )
 	mainLayout->addWidget( stopButton );
 
 	// Create the model presenter	
-	StaffPresenter staffPresenter( &staff, scene );
+	GrandStaffPresenter grandStaffPresenter( &grandStaff, scene );
 
 	// Create the note providers and its updater
 	NoteProvider* noteProviderKeyboard = mainWidget;
@@ -52,7 +51,7 @@ int main( int argc, char** argv )
 		noteProvider = noteProviderKeyboard;
 
 	// Create the exercise
-	QExercise* exercise = new QExercise(&staffPresenter, noteProvider, mainWidget);
+	QExercise* exercise = new QExercise(&grandStaffPresenter, noteProvider, mainWidget);
 
 	bool r = startButton->connect( startButton, SIGNAL( pressed() ), exercise, SLOT( start() ) );
 	assert(r);
@@ -66,7 +65,6 @@ int main( int argc, char** argv )
 	
 	return ret ;
 }
-
 
 void testNotes()
 {

@@ -6,7 +6,7 @@
 #include <time.h>
 #include <QDateTime>
 
-QExercise::QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent )
+QExercise::QExercise( GrandStaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent )
 	:	QObject(parent),
 		NoteProvider::Listener(),
 		mPresenter(presenter),
@@ -36,15 +36,7 @@ void QExercise::start()
 
 	//mNoteGenerator.reset( new LeitnerNoteGenerator() );
 	mNoteGenerator.reset( new BasicNoteGenerator() );
-	if (mPresenter->getStaff()->getStaffClef() == StaffClef::TrebbleClef)
-	{
-		mNoteGenerator->setRange(60, 7 );
-	}
-	else if (mPresenter->getStaff()->getStaffClef() == StaffClef::BassClef)
-	{
-		mNoteGenerator->setRange(41, 60);
-	}
-
+	mNoteGenerator->setRange(60, 70);	// 41,??						// !!!!!!!!!!!!!!!!!
 
 	mNoteCount = 0;
 	mLog.open ("Results.csv", std::fstream::in | std::fstream::out | std::fstream::app);
@@ -63,8 +55,8 @@ void QExercise::stop()
 	mNoteCount = 0;
 
 	// Clear text and stuff
-	mPresenter->setText("...");
-	mPresenter->getStaff()->setNote( Note() );	
+	mPresenter->getTrebleStaffPresenter()->setText("...");
+	mPresenter->getTrebleStaffPresenter()->getStaff()->setNote( Note() );	
 	mTimer->stop();
 	mState = Stopped;
 }
@@ -98,7 +90,7 @@ void QExercise::updateCountDown()
 	}
 	else
 	{
-		mPresenter->setText("GO!");
+		mPresenter->getTrebleStaffPresenter()->setText("GO!");
 		mTimer->stop();
 		nextState();
 	}
@@ -111,12 +103,12 @@ void QExercise::startWaitForAnswer()
 	// store info with note and stuff
 	mState = WaitForAnswer;
 
-	mPresenter->setNoteNameVisible(false);
+	mPresenter->getTrebleStaffPresenter()->setNoteNameVisible(false);
 
 	
 
 	mNoteToFind = mNoteGenerator->drawNewNote();
-	mPresenter->getStaff()->setNote( mNoteToFind );
+	mPresenter->getTrebleStaffPresenter()->getStaff()->setNote( mNoteToFind );
 	mTime.start();
 }
 
@@ -126,7 +118,7 @@ void QExercise::startCheckAnswer()
 	
 	mAnswerTimeInMs = mTime.elapsed();
 
-	mPresenter->setNoteNameVisible(true);
+	mPresenter->getTrebleStaffPresenter()->setNoteNameVisible(true);
 
 	std::string evalMessage = "";
 
@@ -136,7 +128,7 @@ void QExercise::startCheckAnswer()
 	}
 
 	bool success = mNoteGenerator->evaluateAnswer(mNoteAnswered, mAnswerTimeInMs, evalMessage);
-	mPresenter->setText( evalMessage.c_str() );
+	mPresenter->getTrebleStaffPresenter()->setText( evalMessage.c_str() );
 
 	mNoteCount++;
 

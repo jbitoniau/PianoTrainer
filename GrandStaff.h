@@ -11,7 +11,9 @@ public:
 	GrandStaff();
 
 	const Staff&	getTrebleStaff() const			{ return mTrebbleStaff; }
+	Staff&			getTrebleStaff()				{ return mTrebbleStaff; }
 	const Staff&	getBassStaff() const			{ return mBassStaff; }
+	Staff&			getBassStaff()					{ return mBassStaff; }
 
 	void			setNote( const Note& note );
 

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <QTime>
 #include <QTimer>
-#include "StaffPresenter.h"
+#include "GrandStaffPresenter.h"
 #include "NoteProvider.h"
 #include "INoteGenerator.h"
 
@@ -13,7 +13,7 @@ class QExercise :	public QObject,
 	Q_OBJECT
 
 public:
-	QExercise( StaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent );
+	QExercise( GrandStaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent );
 
 public slots:
 	void			start();
@@ -39,7 +39,7 @@ private:
 	void					startWaitForAnswer();
 	void					startCheckAnswer();
 
-	StaffPresenter*			mPresenter;
+	GrandStaffPresenter*	mPresenter;
 	NoteProvider*			mNoteProvider;
 	QTimer*					mTimer;
 	QTime					mTime;
