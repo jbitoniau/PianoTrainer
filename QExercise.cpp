@@ -55,8 +55,8 @@ void QExercise::stop()
 	mNoteCount = 0;
 
 	// Clear text and stuff
-	mPresenter->getTrebleStaffPresenter()->setText("...");
-	mPresenter->getTrebleStaffPresenter()->getStaff()->setNote( Note() );	
+	mPresenter->setText("...");
+	mPresenter->getGrandStaff()->setNote( Note() );	
 	mTimer->stop();
 	mState = Stopped;
 }
@@ -90,7 +90,7 @@ void QExercise::updateCountDown()
 	}
 	else
 	{
-		mPresenter->getTrebleStaffPresenter()->setText("GO!");
+		mPresenter->setText("GO!");
 		mTimer->stop();
 		nextState();
 	}
@@ -103,12 +103,10 @@ void QExercise::startWaitForAnswer()
 	// store info with note and stuff
 	mState = WaitForAnswer;
 
-	mPresenter->getTrebleStaffPresenter()->setNoteNameVisible(false);
-
-	
+	mPresenter->setNoteNameVisible(false);
 
 	mNoteToFind = mNoteGenerator->drawNewNote();
-	mPresenter->getTrebleStaffPresenter()->getStaff()->setNote( mNoteToFind );
+	mPresenter->getGrandStaff()->setNote( mNoteToFind );
 	mTime.start();
 }
 
@@ -118,7 +116,7 @@ void QExercise::startCheckAnswer()
 	
 	mAnswerTimeInMs = mTime.elapsed();
 
-	mPresenter->getTrebleStaffPresenter()->setNoteNameVisible(true);
+	mPresenter->setNoteNameVisible(true);
 
 	std::string evalMessage = "";
 
@@ -128,8 +126,8 @@ void QExercise::startCheckAnswer()
 	}
 
 	bool success = mNoteGenerator->evaluateAnswer(mNoteAnswered, mAnswerTimeInMs, evalMessage);
-	mPresenter->getTrebleStaffPresenter()->setText( evalMessage.c_str() );
-
+	mPresenter->setText( evalMessage.c_str() );
+	
 	mNoteCount++;
 
 	//mPresenter->getStaff()->setNote( Note() );

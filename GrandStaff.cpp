@@ -2,16 +2,28 @@
 
 GrandStaff::GrandStaff()
 	: mTrebbleStaff( StaffClef::TrebbleClef ),
-	  mBassStaff( StaffClef::BassClef)
+	  mBassStaff( StaffClef::BassClef),
+	  mNote()
 {
 }
 
 void GrandStaff::setNote( const Note& note ) 
 {
-	//if ( mNote==note )
-	//	return;
-	//mNote = note;
-	//notifyListeners();	
+	if ( mNote==note )
+		return;
+	mNote = note;
+	
+	if ( mNote.getNumber()>60 )
+	{
+		mTrebbleStaff.setNote( note );
+		mBassStaff.setNote( Note::EmptyNote );
+	}
+	else
+	{
+		mTrebbleStaff.setNote( Note::EmptyNote );
+		mBassStaff.setNote( note );
+	}
+	notifyListeners();	
 }
 
 void GrandStaff::addListener( Listener* listener )
@@ -21,7 +33,7 @@ void GrandStaff::addListener( Listener* listener )
 
 void GrandStaff::notifyListeners()
 {
-//	for ( std::size_t i=0; i<mListeners.size(); ++i )
-	//	mListeners[i]->onNoteChanged( this, getNote() );
+	for ( std::size_t i=0; i<mListeners.size(); ++i )
+		mListeners[i]->onNoteChanged( this, getNote() );
 }
 

@@ -11,34 +11,27 @@ class StaffPresenter : public Staff::Listener
 public:
 	StaffPresenter( Staff* staff, QGraphicsItemGroup* group );
 
-	Staff*			getStaff() const { return mStaff; }
-	QGraphicsScene*	getGraphicsScene() const { return mGraphicsScene; }
+	Staff*				getStaff() const		{ return mStaff; }
+	QGraphicsItemGroup*	getItemGroup() const	{ return mGroup; }
 
-	void			update();
-
-	void			setText( const QString& text );
-	void			setNoteNameVisible( bool value );
+	void				update();
 
 private:
-	void			onNoteChanged( Staff* staff, const Note& note );
+	void				onNoteChanged( Staff* staff, const Note& note );
 	
-	void			init();
-	void			createStaffLineItems();
-	void			createStaffKeyItem();
-	void			createNoteItem();
-	void			createNoteNameItem();
+	void				init();
+	void				createStaffLineItems();
+	void				createStaffKeyItem();
+	void				createNoteItem();
 	
 	// Return the vertical position in the scene (i.e. QGraphicsItem's coordinate system)
-	qreal			getSceneYFromStaffY( int y ) const;
+	qreal				getSceneYFromStaffY( int y ) const;
 
 	Staff*					mStaff;
 
 	QGraphicsItemGroup*		mGroup;
-	QGraphicsScene*			mGraphicsScene;
 	QGraphicsPixmapItem*	mNoteItem;
 	std::vector<QGraphicsLineItem*> mLedgerLines;
-	QGraphicsTextItem*		mNoteNameItem;
-	QGraphicsTextItem*		mTextItem;
 	
 	QPixmap					mNotePixmap;
 	QPixmap					mNoteSharpPixmap;

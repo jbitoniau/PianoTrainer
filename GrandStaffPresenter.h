@@ -13,6 +13,9 @@ public:
 	StaffPresenter*	getTrebleStaffPresenter() const { return mTrebleStaffPresenter; }
 	StaffPresenter*	getBassStaffPresenter() const { return mBassStaffPresenter; }
 	
+	void			setText( const QString& text );
+	void			setNoteNameVisible( bool value );
+
 /*	Staff*			getStaff() const { return mStaff; }
 	QGraphicsScene*	getGraphicsScene() const { return mGraphicsScene; }
 
@@ -23,8 +26,8 @@ public:
 */
 
 private:
-/*	void			onNoteChanged( Staff* staff, const Note& note );
-	
+	void			onNoteChanged( GrandStaff* grandStaff, const Note& note );
+/*	
 	void			init();
 	void			createStaffLineItems();
 	void			createStaffKeyItem();
@@ -40,4 +43,6 @@ private:
 	StaffPresenter*			mTrebleStaffPresenter;
 	StaffPresenter*			mBassStaffPresenter;
 
+	QGraphicsTextItem*		mNoteNameItem;
+	QGraphicsTextItem*		mTextItem;
 };

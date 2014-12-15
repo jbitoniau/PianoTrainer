@@ -17,8 +17,6 @@ StaffPresenter::StaffPresenter( Staff* staff, QGraphicsItemGroup* group )
 	  mGroup(group),
 	  mNoteItem(NULL),
 	  mLedgerLines(),
-	  mNoteNameItem(NULL),
-	  mTextItem(NULL),
 	  mNotePixmap(),
 	  mNoteSharpPixmap(),
 	  mNoteFlatPixmap()	  
@@ -87,13 +85,6 @@ void StaffPresenter::createNoteItem()
 	mNoteItem->setVisible(false);
 }
 
-void StaffPresenter::createNoteNameItem()
-{
-	mNoteNameItem = new QGraphicsTextItem( "...", mGroup );
-	mNoteNameItem->setPos( mStaffWidth, -5 * mStaffLineSpacing / 2 );
-	mNoteNameItem->setScale( 4 );
-}
-
 void StaffPresenter::init()
 {
 	mNotePixmap = QPixmap( "Note.png" );
@@ -103,11 +94,6 @@ void StaffPresenter::init()
 	createStaffLineItems();
 	createStaffKeyItem();
 	createNoteItem();
-	createNoteNameItem();
-
-	mTextItem = new QGraphicsTextItem( "", mGroup );
-	mTextItem->setPos( mStaffWidth, -8 * mStaffLineSpacing / 2 );
-	mTextItem->setScale( 4 );
 }
 
 void StaffPresenter::update()
@@ -115,10 +101,8 @@ void StaffPresenter::update()
 	const Note& note = mStaff->getNote();
 	std::string noteName = note.getName(true);
 	
-	mNoteNameItem->setPlainText( noteName.c_str() );
-
 	for ( size_t i=0; i<mLedgerLines.size(); ++i )
-		mGraphicsScene->removeItem( mLedgerLines[i] );
+		delete mLedgerLines[i];
 	mLedgerLines.clear();
 
 	if ( note==Note::EmptyNote )
@@ -181,14 +165,4 @@ qreal StaffPresenter::getSceneYFromStaffY( int staffY ) const
 {
 	qreal y = -1 * static_cast<qreal>(staffY) * (mStaffLineSpacing/2);
 	return y;
-}
-
-void StaffPresenter::setText( const QString& text )
-{
-	mTextItem->setPlainText(text); 
-}
-
-void StaffPresenter::setNoteNameVisible( bool value )
-{
-	mNoteNameItem->setVisible(value); 
 }
