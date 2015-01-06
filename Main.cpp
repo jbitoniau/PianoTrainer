@@ -26,14 +26,18 @@ int main( int argc, char** argv )
 	
 	// Create the user interface
 	NoteProviderKeyboard* mainWidget = new NoteProviderKeyboard();		
-	QVBoxLayout* mainLayout = new QVBoxLayout( mainWidget );
+	QHBoxLayout* mainLayout = new QHBoxLayout( mainWidget );
 	QGraphicsScene*	scene = new QGraphicsScene();
 	QGraphicsView* view = new QGraphicsView( scene, mainWidget );
 	mainLayout->addWidget( view );
+
+	QVBoxLayout* buttonLayout = new QVBoxLayout();
+	mainLayout->addLayout( buttonLayout );
 	QPushButton* startButton = new QPushButton( "Start", mainWidget );
-	mainLayout->addWidget( startButton );
+	buttonLayout->addWidget( startButton );
 	QPushButton* stopButton = new QPushButton( "Stop", mainWidget );
-	mainLayout->addWidget( stopButton );
+	buttonLayout->addWidget( stopButton );
+	buttonLayout->addStretch();
 
 	// Create the model presenter	
 	GrandStaffPresenter grandStaffPresenter( &grandStaff, scene );
@@ -45,13 +49,20 @@ int main( int argc, char** argv )
 	QNoteProviderUpdater* providerUpdaterMIDI = new QNoteProviderUpdater(noteProviderMidi, 5, mainWidget);
 	NoteProvider* noteProvider = NULL;
 
+	bool ignoreOctaveInAnswer = true;
 	if (noteProviderMidi->IsAvailable())
+	{
 		noteProvider = noteProviderMidi;
+		ignoreOctaveInAnswer = false;
+	}
 	else
+	{
 		noteProvider = noteProviderKeyboard;
+	}
 
 	// Create the exercise
 	QExercise* exercise = new QExercise(&grandStaffPresenter, noteProvider, mainWidget);
+	exercise->setIgnoreOctaveInAnswer( ignoreOctaveInAnswer );
 
 	bool r = startButton->connect( startButton, SIGNAL( pressed() ), exercise, SLOT( start() ) );
 	assert(r);

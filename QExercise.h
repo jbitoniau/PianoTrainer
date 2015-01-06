@@ -15,6 +15,8 @@ class QExercise :	public QObject,
 public:
 	QExercise( GrandStaffPresenter* presenter, NoteProvider* noteProvider, QObject* parent );
 
+	void	setIgnoreOctaveInAnswer( bool value ) { mIgnoreOctaveNumberInAnswer = value; }
+
 public slots:
 	void			start();
 	void			stop();

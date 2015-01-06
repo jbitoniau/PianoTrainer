@@ -16,7 +16,7 @@ GrandStaffPresenter::GrandStaffPresenter( GrandStaff* grandStaff, QGraphicsScene
 	mTrebleStaffPresenter = new StaffPresenter( &grandStaff->getTrebleStaff(), trebleGroup );
 
 	QGraphicsItemGroup* bassGroup = new QGraphicsItemGroup();
-	bassGroup->setPos(0, 300 );
+	bassGroup->setPos(0, 270 );
 	mGraphicsScene->addItem( bassGroup );
 	mBassStaffPresenter = new StaffPresenter( &grandStaff->getBassStaff(), bassGroup );
 
